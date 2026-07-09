@@ -1,0 +1,13 @@
+{%- comment -%}
+  Ported from src/components/ui/section-heading.tsx
+  Params: eyebrow, heading, description, align ('left' | 'center')
+{%- endcomment -%}
+<div class="max-w-3xl {% if align == 'center' %}mx-auto text-center{% endif %}">
+  {%- if eyebrow != blank -%}
+    <p class="mb-4 text-xs font-semibold uppercase tracking-[0.28em] text-[var(--color-muted)]">{{ eyebrow }}</p>
+  {%- endif -%}
+  <h2 class="font-display text-4xl leading-[0.95] tracking-[-0.03em] text-[var(--color-ink)] sm:text-5xl">{{ heading }}</h2>
+  {%- if description != blank -%}
+    <p class="mt-5 max-w-2xl text-base leading-8 text-[var(--color-muted)] sm:text-lg">{{ description }}</p>
+  {%- endif -%}
+</div>

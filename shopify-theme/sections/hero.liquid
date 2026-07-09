@@ -1,0 +1,41 @@
+{%- comment -%}
+  Placeholder homepage hero in the Somara Labs visual language.
+  NOTE: the full Next.js homepage (videos, animated sections, marquees) will be
+  ported section-by-section in the next phase. This is the shell-stage hero.
+{%- endcomment -%}
+<section class="relative overflow-hidden">
+  <div class="ambient-orb absolute -left-32 top-10 h-96 w-96 bg-[var(--color-accent-sage)] opacity-30" aria-hidden="true"></div>
+  <div class="ambient-orb absolute -right-24 top-40 h-80 w-80 bg-[var(--color-accent-blue)] opacity-30" aria-hidden="true"></div>
+
+  <div class="mx-auto max-w-7xl px-6 py-24 text-center lg:px-8 lg:py-32">
+    <p class="text-xs font-bold uppercase tracking-[0.25em] text-[var(--color-muted)]">{{ section.settings.eyebrow }}</p>
+    <h1 class="mx-auto mt-6 max-w-4xl font-display text-5xl leading-[1.05] tracking-[-0.03em] text-[var(--color-ink)] sm:text-6xl lg:text-7xl">
+      {{ section.settings.title }}
+    </h1>
+    <p class="mx-auto mt-6 max-w-2xl text-base leading-7 text-[var(--color-muted)]">{{ section.settings.description }}</p>
+    <div class="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
+      {%- if section.settings.primary_label != blank -%}
+        <a href="{{ section.settings.primary_url }}" class="rounded-full bg-[var(--color-ink)] px-8 py-4 text-sm font-semibold text-[var(--color-paper)] transition hover:bg-[var(--color-ink-soft)]">{{ section.settings.primary_label }}</a>
+      {%- endif -%}
+      {%- if section.settings.secondary_label != blank -%}
+        <a href="{{ section.settings.secondary_url }}" class="rounded-full border border-[var(--color-border-strong)] px-8 py-4 text-sm font-semibold text-[var(--color-ink)] transition hover:bg-[var(--color-overlay-soft)]">{{ section.settings.secondary_label }}</a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Premium recovery technology" },
+    { "type": "textarea", "id": "title", "label": "Title", "default": "Red light therapy built to anchor your at-home recovery ritual." },
+    { "type": "textarea", "id": "description", "label": "Description", "default": "Somara Labs is a luxury recovery equipment brand built around red light therapy panels in three core sizes: quarter, half, and full body." },
+    { "type": "text", "id": "primary_label", "label": "Primary button label", "default": "Shop Recovery Systems" },
+    { "type": "url", "id": "primary_url", "label": "Primary button link" },
+    { "type": "text", "id": "secondary_label", "label": "Secondary button label", "default": "Learn More" },
+    { "type": "url", "id": "secondary_url", "label": "Secondary button link" }
+  ],
+  "presets": [{ "name": "Hero" }]
+}
+{% endschema %}

@@ -1,0 +1,334 @@
+{%- comment -%}
+  Homepage — ported 1:1 from src/components/marketing/home-sections.tsx
+  Fixed layout; repeatable items (products / features / benefits / reviews / faqs)
+  are section blocks filtered by type. All copy defaults to the original content.
+{%- endcomment -%}
+{%- assign s = section.settings -%}
+
+{%- comment -%}
+  Resolve each homepage video to a playable URL. If the merchant uploaded a video in the
+  theme editor (a `video` setting), use its mp4 source; otherwise fall back to the bundled
+  asset so the page still looks right out of the box.
+{%- endcomment -%}
+{%- liquid
+  assign hero1 = 'hero-video-1.mp4' | asset_url
+  if s.hero_video_1 != blank
+    assign m = s.hero_video_1.sources | where: 'format', 'mp4'
+    if m.size > 0
+      assign hero1 = m.first.url
+    else
+      assign hero1 = s.hero_video_1.sources.first.url
+    endif
+  endif
+
+  assign hero2 = 'hero-video-2.mp4' | asset_url
+  if s.hero_video_2 != blank
+    assign m = s.hero_video_2.sources | where: 'format', 'mp4'
+    if m.size > 0
+      assign hero2 = m.first.url
+    else
+      assign hero2 = s.hero_video_2.sources.first.url
+    endif
+  endif
+
+  assign ritual_src = ''
+  if s.ritual_video != blank
+    assign m = s.ritual_video.sources | where: 'format', 'mp4'
+    if m.size > 0
+      assign ritual_src = m.first.url
+    else
+      assign ritual_src = s.ritual_video.sources.first.url
+    endif
+  elsif s.ritual_video_url != blank
+    assign ritual_src = s.ritual_video_url
+  endif
+-%}
+
+{%- comment -%} ============ 1. Split Hero ============ {%- endcomment -%}
+<section class="relative overflow-hidden bg-[var(--color-hero-bg)] px-6 pb-16 pt-32 lg:px-8 lg:pb-24 lg:pt-40">
+  <div class="mx-auto grid max-w-7xl gap-12 lg:grid-cols-2 lg:items-center">
+    <div class="reveal relative z-10 text-[var(--color-hero-fg)]">
+      <p class="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--color-hero-muted)]">{{ s.hero_eyebrow }}</p>
+      <h1 class="mt-6 max-w-2xl font-display text-5xl leading-[1.05] tracking-[-0.04em] sm:text-7xl lg:text-7xl">{{ s.hero_title }}</h1>
+      <p class="mt-6 max-w-xl text-lg leading-8 text-[var(--color-hero-muted)]">{{ s.hero_description }}</p>
+      <div class="mt-8 flex flex-col gap-4 sm:flex-row">
+        <a href="{{ s.hero_cta_link | default: '#' }}" class="inline-flex items-center justify-center rounded-full bg-[var(--color-hero-fg)] px-5 py-3 text-sm font-semibold tracking-[0.02em] text-[var(--color-hero-bg)] shadow-[0_18px_40px_var(--color-brand-glow)] transition-all duration-300 hover:bg-[var(--color-surface-strong)]">{{ s.hero_cta_label }}</a>
+      </div>
+      <div class="mt-12 flex items-center gap-6 text-sm text-[var(--color-hero-muted)]">
+        <div>
+          <p class="font-display text-3xl font-medium text-[var(--color-hero-fg)]">{{ s.stat_1_value }}</p>
+          <p class="mt-1">{{ s.stat_1_label }}</p>
+        </div>
+        <div>
+          <p class="font-display text-3xl font-medium text-[var(--color-hero-fg)]">{{ s.stat_2_value }}</p>
+          <p class="mt-1">{{ s.stat_2_label }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal relative h-[600px] w-full overflow-hidden rounded-[40px]" style="--reveal-delay:0.2s">
+      <video autoplay muted playsinline
+        data-hero-video
+        data-video-1="{{ hero1 }}"
+        data-video-2="{{ hero2 }}"
+        class="absolute inset-0 h-full w-full object-cover"
+        src="{{ hero1 }}"></video>
+      <div class="absolute inset-0 bg-gradient-to-t from-[var(--color-overlay)] via-transparent to-transparent"></div>
+    </div>
+  </div>
+</section>
+
+{%- comment -%} ============ 2. As seen in ============ {%- endcomment -%}
+<section class="border-b border-[var(--color-overlay-soft)] bg-[var(--color-paper)] px-6 py-12 lg:px-8">
+  <div class="mx-auto flex max-w-7xl flex-col items-center justify-center gap-10 md:flex-row md:gap-16">
+    <p class="whitespace-nowrap text-sm font-semibold uppercase tracking-[0.15em] text-[var(--color-ink)]">As seen in</p>
+    <div class="flex flex-wrap items-center justify-center gap-10 text-[var(--color-ink)] opacity-90 md:gap-16 lg:gap-24">
+      <span class="font-display text-4xl uppercase tracking-widest" style="transform:scaleY(0.95)">Vogue</span>
+      <span class="font-sans text-2xl font-black uppercase tracking-tighter" style="transform:scaleY(1.1)">Cosmopolitan</span>
+      <span class="font-sans text-2xl tracking-tight"><strong class="font-semibold">Wellness</strong>Pulse</span>
+    </div>
+  </div>
+</section>
+
+{%- comment -%} ============ 3. Product Showcase ============ {%- endcomment -%}
+<section class="bg-[var(--color-paper)] px-6 py-24 lg:px-8 lg:py-32">
+  <div class="mx-auto max-w-7xl">
+    {% render 'section-heading', eyebrow: s.products_eyebrow, heading: s.products_title, align: 'center' %}
+    <div class="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="reveal">{% render 'home-product-card', card_product: s.product_1 %}</div>
+      <div class="reveal">{% render 'home-product-card', card_product: s.product_2 %}</div>
+      <div class="reveal">{% render 'home-product-card', card_product: s.product_3 %}</div>
+    </div>
+  </div>
+</section>
+
+{%- comment -%} ============ 4. Red Light Ritual Banner ============ {%- endcomment -%}
+<section class="bg-[var(--color-paper)] px-6 py-10 lg:px-8 lg:py-12">
+  <div class="mx-auto max-w-[1400px]">
+    <div class="reveal relative overflow-hidden rounded-[34px] bg-[var(--color-redlight-base)] shadow-[0_30px_120px_var(--color-redlight-shadow)]">
+      {%- if ritual_src != blank -%}
+        <video autoplay muted loop playsinline class="block h-auto w-full" poster="{{ 'poster-redlight.webp' | asset_url }}" src="{{ ritual_src }}"></video>
+      {%- else -%}
+        <img src="{{ 'poster-redlight.webp' | asset_url }}" alt="Red light therapy ritual" class="block h-auto w-full">
+      {%- endif -%}
+      <div class="absolute inset-0" style="background:radial-gradient(circle at center, transparent 0%, var(--color-redlight-overlay-start) 38%, var(--color-redlight-overlay-end) 100%)"></div>
+      <div class="absolute inset-0 bg-gradient-to-r from-[var(--color-overlay)] via-transparent to-[var(--color-redlight-side-glow)]"></div>
+    </div>
+  </div>
+</section>
+
+{%- comment -%} ============ 5. Benefits Grid ============ {%- endcomment -%}
+<section class="bg-[var(--color-paper)] px-6 py-24 lg:px-8 lg:py-32">
+  <div class="mx-auto max-w-7xl">
+    {% render 'section-heading', eyebrow: s.benefits_eyebrow, heading: s.benefits_title, align: 'center' %}
+    <div class="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+      {%- assign bi = 0 -%}
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'benefit' -%}
+          <div class="reveal flex flex-col items-center rounded-3xl bg-[var(--color-surface-strong)] p-8 text-center shadow-sm" style="--reveal-delay:{{ bi | times: 0.1 }}s" {{ block.shopify_attributes }}>
+            <div class="flex h-16 w-16 items-center justify-center rounded-full bg-[var(--color-accent-peach)]/20 text-[var(--color-accent-peach)]">
+              {% render 'icon', name: block.settings.icon, size: 28 %}
+            </div>
+            <h3 class="mt-6 text-xl font-medium text-[var(--color-ink)]">{{ block.settings.title }}</h3>
+            <p class="mt-3 text-sm text-[var(--color-muted)]">{{ block.settings.description }}</p>
+          </div>
+          {%- assign bi = bi | plus: 1 -%}
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{%- comment -%} ============ 6. Feature rows ============ {%- endcomment -%}
+<section class="bg-[var(--color-paper)] px-6 py-24 lg:px-8">
+  <div class="mx-auto max-w-7xl">
+    <div class="grid gap-16 lg:gap-32">
+      {%- assign fi = 0 -%}
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'feature' -%}
+          {%- assign rev = false -%}
+          {%- assign mod = fi | modulo: 2 -%}
+          {%- if mod != 0 -%}{%- assign rev = true -%}{%- endif -%}
+          {% render 'feature-row', block: block, reverse: rev %}
+          {%- assign fi = fi | plus: 1 -%}
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{%- comment -%} ============ 7. Big Stat Banner ============ {%- endcomment -%}
+<section class="bg-[var(--color-paper)] px-6 py-24 text-center lg:px-8 lg:py-32">
+  <div class="reveal mx-auto max-w-4xl">
+    <h2 class="bg-gradient-to-r from-[var(--color-accent-sage)] via-[var(--color-accent-blue)] to-[var(--color-accent-peach)] bg-clip-text font-display text-8xl font-light tracking-tight text-transparent sm:text-[12rem]">{{ s.stat_big_number }}</h2>
+    <p class="mt-6 text-xl font-medium uppercase tracking-wide text-[var(--color-ink)]">{{ s.stat_big_label }}</p>
+  </div>
+</section>
+
+{%- comment -%} ============ 8. Reviews ============ {%- endcomment -%}
+<section class="bg-[var(--color-panel-dark)] px-6 py-24 text-[var(--color-hero-fg)] lg:px-8 lg:py-32">
+  <div class="mx-auto max-w-7xl text-center">
+    <p class="text-sm font-semibold uppercase tracking-widest text-[var(--color-panel-dark-muted)]">{{ s.reviews_eyebrow }}</p>
+    <div class="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {%- assign ri = 0 -%}
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'review' -%}
+          <div class="reveal rounded-[24px] border border-[var(--color-border-inverse)] bg-[var(--color-panel-dark)] p-8 text-left backdrop-blur-md" style="--reveal-delay:{{ ri | times: 0.1 }}s" {{ block.shopify_attributes }}>
+            <div class="flex gap-1 text-[var(--color-accent-peach)]">
+              {%- for i in (1..5) -%}{% render 'icon', name: 'star', size: 16, fill: 'currentColor' %}{%- endfor -%}
+            </div>
+            <p class="mt-6 text-lg leading-relaxed text-[var(--color-hero-fg)]">&ldquo;{{ block.settings.quote }}&rdquo;</p>
+            <div class="mt-8 flex items-center gap-3">
+              <div class="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-surface-muted)] text-sm font-medium text-[var(--color-hero-fg)]">{{ block.settings.name | slice: 0 }}</div>
+              <div>
+                <p class="text-sm font-medium text-[var(--color-hero-fg)]">{{ block.settings.name }}</p>
+                <p class="text-xs text-[var(--color-panel-dark-muted)]">{{ block.settings.role }}</p>
+              </div>
+            </div>
+          </div>
+          {%- assign ri = ri | plus: 1 -%}
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{%- comment -%} ============ 9. FAQ ============ {%- endcomment -%}
+<section class="bg-[var(--color-paper)] px-6 py-24 lg:px-8 lg:py-32">
+  <div class="mx-auto grid max-w-7xl gap-16 lg:grid-cols-[1fr_1.5fr]">
+    <div class="reveal">
+      {% render 'section-heading', eyebrow: s.faq_eyebrow, heading: s.faq_title %}
+      <p class="mt-6 text-lg text-[var(--color-muted)]">{{ s.faq_description }}</p>
+      <a href="{{ s.faq_cta_link | default: '/pages/contact' }}" class="mt-8 inline-flex items-center justify-center rounded-full border border-[var(--color-border-soft)] bg-[var(--color-surface)] px-5 py-3 text-sm font-semibold text-[var(--color-ink)] backdrop-blur-xl transition-all duration-300 hover:bg-[var(--color-surface-strong)]">{{ s.faq_cta_label }}</a>
+    </div>
+    <div class="reveal" style="--reveal-delay:0.1s">
+      <div class="rounded-[32px] border border-[var(--color-overlay-soft)] bg-[var(--color-surface-strong)] p-6 shadow-sm lg:p-10">
+        {%- assign faq_blocks = section.blocks | where: 'type', 'faq' -%}
+        {% render 'faq-accordion', faq_blocks: faq_blocks %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{%- comment -%} ============ 10. Trust Badges ============ {%- endcomment -%}
+<section class="border-t border-[var(--color-overlay-soft)] bg-[var(--color-paper)] py-12">
+  <div class="mx-auto flex max-w-7xl flex-wrap justify-center gap-12 px-6 text-center text-sm text-[var(--color-muted)] lg:px-8">
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'trust' -%}
+        <div class="flex flex-col items-center gap-2" {{ block.shopify_attributes }}>
+          <div class="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--color-accent-peach)]/10 text-[var(--color-accent-peach)]">{% render 'icon', name: 'award', size: 20 %}</div>
+          <p class="max-w-[200px]"><span class="font-semibold text-[var(--color-ink)]">{{ block.settings.value }}</span> {{ block.settings.label }}</p>
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Home",
+  "settings": [
+    { "type": "header", "content": "Hero" },
+    { "type": "text", "id": "hero_eyebrow", "label": "Eyebrow", "default": "Premium recovery technology" },
+    { "type": "textarea", "id": "hero_title", "label": "Title", "default": "Red light therapy built to anchor your at-home recovery ritual." },
+    { "type": "textarea", "id": "hero_description", "label": "Description", "default": "Somara Labs is a luxury recovery equipment brand built around red light therapy panels in three core sizes: quarter, half, and full body." },
+    { "type": "text", "id": "hero_cta_label", "label": "Hero button label", "default": "Shop Recovery Systems" },
+    { "type": "url", "id": "hero_cta_link", "label": "Hero button link" },
+    { "type": "text", "id": "stat_1_value", "label": "Stat 1 value", "default": "3" },
+    { "type": "text", "id": "stat_1_label", "label": "Stat 1 label", "default": "panel sizes in the core line" },
+    { "type": "text", "id": "stat_2_value", "label": "Stat 2 value", "default": "Flagship" },
+    { "type": "text", "id": "stat_2_label", "label": "Stat 2 label", "default": "red light panels lead the brand" },
+    { "type": "video", "id": "hero_video_1", "label": "Hero video 1", "info": "Upload to replace the default. The hero alternates between video 1 and video 2." },
+    { "type": "video", "id": "hero_video_2", "label": "Hero video 2", "info": "Upload to replace the default second hero video." },
+
+    { "type": "header", "content": "Product showcase", "info": "Pick the 3 products to feature. They appear once added to your store." },
+    { "type": "text", "id": "products_eyebrow", "label": "Eyebrow", "default": "The Collection" },
+    { "type": "textarea", "id": "products_title", "label": "Title", "default": "Luxury at-home recovery equipment built around red light therapy." },
+    { "type": "product", "id": "product_1", "label": "Product 1" },
+    { "type": "product", "id": "product_2", "label": "Product 2" },
+    { "type": "product", "id": "product_3", "label": "Product 3" },
+
+    { "type": "header", "content": "Red light banner" },
+    { "type": "video", "id": "ritual_video", "label": "Banner video", "info": "Upload a video here to show motion. Leave blank to show the still image." },
+    { "type": "text", "id": "ritual_video_url", "label": "Banner video URL (alternative)", "info": "Optional: paste an external/Files URL instead of uploading above." },
+
+    { "type": "header", "content": "Benefits" },
+    { "type": "text", "id": "benefits_eyebrow", "label": "Eyebrow", "default": "The Science" },
+    { "type": "textarea", "id": "benefits_title", "label": "Title", "default": "Recovery benefits that shape the entire brand." },
+
+    { "type": "header", "content": "Big stat" },
+    { "type": "text", "id": "stat_big_number", "label": "Number", "default": "3" },
+    { "type": "textarea", "id": "stat_big_label", "label": "Label", "default": "panel sizes in the flagship red light line" },
+
+    { "type": "header", "content": "Reviews" },
+    { "type": "text", "id": "reviews_eyebrow", "label": "Eyebrow", "default": "Recovery-first customer feedback" },
+
+    { "type": "header", "content": "FAQ" },
+    { "type": "text", "id": "faq_eyebrow", "label": "Eyebrow", "default": "Support" },
+    { "type": "text", "id": "faq_title", "label": "Title", "default": "Frequently asked questions." },
+    { "type": "textarea", "id": "faq_description", "label": "Description", "default": "Everything you need to know about the products, shipping, and returns." },
+    { "type": "text", "id": "faq_cta_label", "label": "FAQ button label", "default": "Contact Support" },
+    { "type": "url", "id": "faq_cta_link", "label": "FAQ button link" }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefit",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon", "default": "moon", "options": [
+          { "value": "moon", "label": "Moon" }, { "value": "zap", "label": "Zap" },
+          { "value": "shield-check", "label": "Shield" }, { "value": "sun", "label": "Sun" } ] },
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "textarea", "id": "description", "label": "Description" }
+      ]
+    },
+    {
+      "type": "feature",
+      "name": "Feature row",
+      "settings": [
+        { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+        { "type": "textarea", "id": "title", "label": "Title" },
+        { "type": "textarea", "id": "description", "label": "Description" },
+        { "type": "textarea", "id": "benefits", "label": "Benefits (one per line)" },
+        { "type": "text", "id": "cta_label", "label": "CTA label" },
+        { "type": "url", "id": "cta_link", "label": "CTA link" },
+        { "type": "select", "id": "accent", "label": "Accent", "default": "sage", "options": [
+          { "value": "sage", "label": "Sage" }, { "value": "blue", "label": "Blue" },
+          { "value": "peach", "label": "Peach" }, { "value": "lavender", "label": "Lavender" } ] },
+        { "type": "video", "id": "video", "label": "Video (upload)", "info": "Upload to replace the default. Falls back to the bundled asset / image below." },
+        { "type": "text", "id": "video_key", "label": "Video (theme asset filename)" },
+        { "type": "text", "id": "poster_key", "label": "Poster (theme asset filename)" },
+        { "type": "text", "id": "image_key", "label": "Image (theme asset filename)" },
+        { "type": "text", "id": "video_url", "label": "Video URL (external)" },
+        { "type": "text", "id": "poster_url", "label": "Poster URL (external)" },
+        { "type": "text", "id": "image_url", "label": "Image URL (external)" }
+      ]
+    },
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        { "type": "textarea", "id": "quote", "label": "Quote" },
+        { "type": "text", "id": "name", "label": "Name" },
+        { "type": "text", "id": "role", "label": "Role" }
+      ]
+    },
+    {
+      "type": "faq",
+      "name": "FAQ item",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question" },
+        { "type": "textarea", "id": "answer", "label": "Answer" }
+      ]
+    },
+    {
+      "type": "trust",
+      "name": "Trust badge",
+      "settings": [
+        { "type": "text", "id": "value", "label": "Value" },
+        { "type": "text", "id": "label", "label": "Label" }
+      ]
+    }
+  ]
+}
+{% endschema %}

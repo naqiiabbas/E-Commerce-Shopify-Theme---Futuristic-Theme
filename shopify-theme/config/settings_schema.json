@@ -1,0 +1,26 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Somara Labs",
+    "theme_version": "0.1.0",
+    "theme_author": "Somara Labs",
+    "theme_documentation_url": "https://shopify.dev",
+    "theme_support_url": "https://shopify.dev"
+  },
+  {
+    "name": "Brand",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon"
+      },
+      {
+        "type": "textarea",
+        "id": "footer_tagline",
+        "label": "Footer tagline",
+        "default": "Luxury recovery technology centered around red light therapy."
+      }
+    ]
+  }
+]

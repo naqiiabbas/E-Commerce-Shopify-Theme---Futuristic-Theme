@@ -1,0 +1,91 @@
+{%- comment -%}
+  Red Light Panels landing page — ported 1:1 from src/app/products/red-light-panels/page.tsx
+  Custom PRODUCT template: assign to the product with handle "red-light-panels".
+  (Matches the original design, which funnels to contact rather than a buy button.)
+{%- endcomment -%}
+{% render 'page-hero',
+  eyebrow: 'Flagship Product',
+  heading: 'Red light therapy panels built as the centerpiece of the Somara Labs recovery system.',
+  description: 'This is the core Somara Labs product line: premium red light panels in quarter, half, and full body formats for recovery, restoration, performance, and wellness optimization.',
+  primary_label: 'Shop Red Light Panels',
+  primary_link: '#buy'
+%}
+
+{%- comment -%} Intro: showcase video + why it leads {%- endcomment -%}
+<section class="px-6 pb-10 lg:px-8">
+  <div class="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.82fr_1.18fr] lg:items-stretch">
+    <div class="reveal relative min-h-[520px] overflow-hidden rounded-[36px] border border-[var(--color-border-soft)] bg-[var(--color-panel-dark)] shadow-[0_28px_90px_var(--color-card-shadow-strong)] lg:min-h-full">
+      <video autoplay muted loop playsinline poster="{{ 'rl-hero.webp' | asset_url }}" class="absolute inset-0 h-full w-full object-cover object-center" src="{{ 'rl-showcase.mp4' | asset_url }}"></video>
+    </div>
+    <div class="reveal rounded-[36px] border border-[var(--color-border-soft)] bg-[var(--color-surface-soft)] p-8 shadow-[0_20px_60px_var(--color-card-shadow)]" style="--reveal-delay:0.08s">
+      <p class="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--color-muted)]">Why it leads</p>
+      <h2 class="mt-4 font-display text-5xl leading-[0.95] tracking-[-0.04em] text-[var(--color-ink)]">One flagship line. Three formats. A full recovery identity.</h2>
+      <p class="mt-5 text-base leading-8 text-[var(--color-muted)]">Red light panels are the brand-defining product for Somara Labs. Everything else in the catalog supports this system, but the panels carry the core promise of recovery, restoration, and daily ritualized performance care.</p>
+      <div class="mt-8 grid gap-4">
+        {%- assign highlights = 'Built around recovery, inflammation reduction, and muscle restoration;Designed to support sleep, skin health, and long-term wellness optimization;Available in quarter, half, and full body sizes;Created as the lead product line in the Somara Labs recovery system' | split: ';' -%}
+        {%- for item in highlights -%}
+          <div class="rounded-[24px] border border-[var(--color-border-soft)] bg-[var(--color-surface)] px-5 py-4 text-sm leading-7 text-[var(--color-ink)]">{{ item }}</div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{%- comment -%} Purchase module {%- endcomment -%}
+<section class="px-6 py-10 lg:px-8">
+  <div class="reveal mx-auto max-w-3xl">
+    {% render 'product-buy', heading: 'Order your panel', button_label: 'Add to cart' %}
+  </div>
+</section>
+
+{%- comment -%} Panel sizes {%- endcomment -%}
+<section class="px-6 py-14 lg:px-8 lg:py-[4.5rem]">
+  <div class="mx-auto max-w-7xl">
+    <div class="reveal max-w-3xl">
+      <p class="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--color-muted)]">Panel Sizes</p>
+      <h2 class="mt-4 font-display text-5xl tracking-[-0.04em] text-[var(--color-ink)]">Choose the format that fits your space and ritual.</h2>
+    </div>
+    <div class="mt-14 grid gap-8 lg:grid-cols-3">
+      {%- assign panel_names = 'Quarter Panel|Half Panel|Full Body Panel' | split: '|' -%}
+      {%- assign panel_imgs = 'rl-quarter.webp|rl-half.webp|rl-full.webp' | split: '|' -%}
+      {%- assign panel_descs = 'A compact format for focused recovery zones, smaller spaces, and daily consistency.|The balanced format for regular full-session use across performance, inflammation, and skin goals.|The hero format for immersive at-home recovery with the strongest flagship presence.' | split: '|' -%}
+      {%- assign panel_benefits = 'Targeted muscle recovery,Sleep support rituals,Easy home placement;Mid-size recovery coverage,Flexible daily scheduling,Best all-round format;Head-to-toe coverage,Premium recovery centerpiece,Built for serious routines' | split: ';' -%}
+      {%- for name in panel_names -%}
+        <div class="reveal overflow-hidden rounded-[32px] border border-[var(--color-border-soft)] bg-[var(--color-surface-soft)] shadow-[0_20px_60px_var(--color-card-shadow)]" style="--reveal-delay:{{ forloop.index0 | times: 0.08 }}s">
+          <div class="p-4">
+            <img src="{{ panel_imgs[forloop.index0] | asset_url }}" alt="{{ name }}" class="aspect-[4/5] w-full rounded-[24px] object-cover">
+          </div>
+          <div class="px-6 pb-6 pt-2">
+            <h3 class="font-display text-3xl tracking-[-0.03em] text-[var(--color-ink)]">{{ name }}</h3>
+            <p class="mt-3 text-sm leading-7 text-[var(--color-muted)]">{{ panel_descs[forloop.index0] }}</p>
+            <div class="mt-5 flex flex-wrap gap-2">
+              {%- assign blist = panel_benefits[forloop.index0] | split: ',' -%}
+              {%- for b in blist -%}
+                <span class="rounded-full border border-[var(--color-border-soft)] bg-[var(--color-surface)] px-3 py-1 text-xs font-medium text-[var(--color-ink)]">{{ b }}</span>
+              {%- endfor -%}
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{%- comment -%} Daily ritual banner {%- endcomment -%}
+<section class="px-6 py-8 lg:px-8 lg:py-12">
+  <div class="mx-auto max-w-7xl">
+    <div class="reveal overflow-hidden rounded-[36px] border border-[var(--color-border-soft)] bg-[var(--color-redlight-base)] shadow-[0_28px_90px_var(--color-redlight-shadow)]">
+      <div class="grid gap-0 lg:grid-cols-[1.1fr_0.9fr]">
+        <img src="{{ 'rl-hero.webp' | asset_url }}" alt="Somara Labs red light therapy hero view" class="h-full w-full object-cover">
+        <div class="flex flex-col justify-center p-8 lg:p-12">
+          <p class="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--color-redlight-text)]">Daily Ritual</p>
+          <h2 class="mt-4 font-display text-5xl leading-[0.96] tracking-[-0.04em] text-[var(--color-redlight-text)]">Recovery technology that feels architectural, not clinical.</h2>
+          <p class="mt-5 text-base leading-8 text-[var(--color-redlight-line-soft)]">The Somara Labs red light collection is meant to feel like a premium environment piece inside the home while still delivering the serious performance presence of a flagship recovery system.</p>
+          <div class="mt-8">
+            <a href="/pages/contact" class="inline-flex items-center justify-center rounded-full bg-[var(--color-brand-primary)] px-5 py-3 text-sm font-semibold text-[var(--color-paper)] shadow-[0_18px_40px_var(--color-brand-glow)] transition hover:bg-[var(--color-brand-secondary)]">Request Product Guidance</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

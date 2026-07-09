@@ -1,0 +1,41 @@
+{%- comment -%} Full cart page (fallback when JS is off / direct /cart visit). {%- endcomment -%}
+<section class="mx-auto max-w-5xl px-6 pb-12 pt-28 lg:px-8 lg:pt-36">
+  <h1 class="font-display text-4xl tracking-[-0.03em] text-[var(--color-ink)] sm:text-5xl">Your Cart</h1>
+
+  {%- if cart.item_count == 0 -%}
+    <div class="mt-12 rounded-3xl border border-[var(--color-border-soft)] bg-[var(--color-surface)] p-12 text-center">
+      <p class="font-display text-2xl text-[var(--color-ink)]">Your cart is empty</p>
+      <a href="{{ routes.all_products_collection_url }}" class="mt-6 inline-flex rounded-full bg-[var(--color-ink)] px-6 py-3 text-sm font-semibold text-[var(--color-paper)] transition hover:bg-[var(--color-ink-soft)]">Browse all</a>
+    </div>
+  {%- else -%}
+    <form action="{{ routes.cart_url }}" method="post" class="mt-10">
+      <ul class="flex flex-col divide-y divide-[var(--color-border-soft)]">
+        {%- for item in cart.items -%}
+          <li class="flex gap-5 py-6">
+            <a href="{{ item.url }}" class="h-28 w-24 shrink-0 overflow-hidden rounded-2xl bg-[var(--color-surface-muted)]">
+              {%- if item.image -%}<img src="{{ item.image | image_url: width: 200 }}" alt="{{ item.title | escape }}" class="h-full w-full object-cover">{%- endif -%}
+            </a>
+            <div class="flex flex-1 flex-col">
+              <a href="{{ item.url }}" class="font-display text-xl text-[var(--color-ink)]">{{ item.product.title }}</a>
+              {%- unless item.variant.title contains 'Default' -%}<p class="text-sm text-[var(--color-muted)]">{{ item.variant.title }}</p>{%- endunless -%}
+              <div class="mt-auto flex items-center justify-between">
+                <input type="number" name="updates[]" value="{{ item.quantity }}" min="0" class="w-20 rounded-full border border-[var(--color-border-strong)] bg-[var(--color-surface-soft)] px-4 py-2 text-sm text-[var(--color-ink)]">
+                <span class="font-semibold text-[var(--color-ink)]">{{ item.final_line_price | money }}</span>
+              </div>
+            </div>
+          </li>
+        {%- endfor -%}
+      </ul>
+      <div class="mt-8 flex flex-col items-end gap-4">
+        <div class="flex items-center gap-6 text-lg">
+          <span class="text-[var(--color-muted)]">Subtotal</span>
+          <span class="font-semibold text-[var(--color-ink)]">{{ cart.total_price | money }}</span>
+        </div>
+        <div class="flex gap-3">
+          <button type="submit" name="update" class="rounded-full border border-[var(--color-border-strong)] px-6 py-3 text-sm font-semibold text-[var(--color-ink)] transition hover:bg-[var(--color-overlay-soft)]">Update</button>
+          <button type="submit" name="checkout" class="rounded-full bg-[var(--color-ink)] px-8 py-3 text-sm font-semibold text-[var(--color-paper)] transition hover:bg-[var(--color-ink-soft)]">Checkout</button>
+        </div>
+      </div>
+    </form>
+  {%- endif -%}
+</section>

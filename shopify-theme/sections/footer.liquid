@@ -1,0 +1,67 @@
+{%- comment -%} Ported 1:1 from src/components/layout/footer.tsx {%- endcomment -%}
+<footer class="relative mt-24 border-t border-[var(--color-border-soft)] bg-[var(--color-footer-bg)]">
+  <div class="mx-auto grid max-w-7xl gap-12 px-6 py-16 lg:grid-cols-[1.3fr_repeat(3,1fr)] lg:px-8">
+    <div>
+      <p class="font-display text-3xl tracking-[-0.04em] text-[var(--color-ink)]">{{ shop.name }}</p>
+      <p class="mt-4 max-w-sm text-sm leading-7 text-[var(--color-muted)]">
+        {{ settings.footer_tagline | default: 'Luxury recovery technology centered around red light therapy.' }}
+      </p>
+      {%- form 'customer', class: 'mt-6 flex flex-col gap-3 sm:max-w-sm sm:flex-row' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <input
+          type="email"
+          name="contact[email]"
+          placeholder="Your work email"
+          required
+          class="min-h-12 flex-1 rounded-full border border-[var(--color-border-strong)] bg-[var(--color-surface-soft)] px-4 text-sm text-[var(--color-ink)] outline-none transition focus:border-[var(--color-brand-highlight)]"
+        >
+        <button type="submit" class="rounded-full bg-[var(--color-ink)] px-5 py-3 text-sm font-semibold text-[var(--color-paper)] transition hover:bg-[var(--color-ink-soft)]">Subscribe</button>
+      {%- endform -%}
+    </div>
+
+    {%- comment -%} Link columns — each driven by a Shopify menu chosen in the theme editor. {%- endcomment -%}
+    {%- for block in section.blocks -%}
+      {%- assign col_menu = linklists[block.settings.menu] -%}
+      <div {{ block.shopify_attributes }}>
+        <p class="text-sm font-semibold text-[var(--color-ink)]">{{ block.settings.title | default: col_menu.title }}</p>
+        <div class="mt-4 flex flex-col gap-3">
+          {%- for link in col_menu.links -%}
+            <a href="{{ link.url }}" class="text-sm text-[var(--color-muted)] transition-colors hover:text-[var(--color-ink)]">{{ link.title }}</a>
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+
+  <div class="mx-auto flex max-w-7xl flex-col gap-3 border-t border-[var(--color-border-soft)] px-6 py-6 text-sm text-[var(--color-muted)] sm:flex-row sm:items-center sm:justify-between lg:px-8">
+    <p>Contact: {{ settings.footer_email | default: 'hello@somaralabs.co' }}</p>
+    <p>{{ settings.footer_socials | default: 'Instagram / LinkedIn / X' }}</p>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    { "type": "text", "id": "footer_email", "label": "Contact email", "default": "hello@somaralabs.co" },
+    { "type": "text", "id": "footer_socials", "label": "Socials line", "default": "Instagram / LinkedIn / X" }
+  ],
+  "blocks": [
+    {
+      "type": "link_group",
+      "name": "Link column",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Column title", "info": "Leave blank to use the menu's own title.", "default": "Shop" },
+        { "type": "link_list", "id": "menu", "label": "Menu", "info": "Edit links in Online Store → Navigation." }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      { "type": "link_group", "settings": { "title": "Shop", "menu": "footer-shop" } },
+      { "type": "link_group", "settings": { "title": "Company", "menu": "footer-company" } },
+      { "type": "link_group", "settings": { "title": "Support", "menu": "footer-support" } }
+    ]
+  }
+}
+{% endschema %}

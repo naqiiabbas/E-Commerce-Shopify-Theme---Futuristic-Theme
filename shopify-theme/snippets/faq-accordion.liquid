@@ -1,0 +1,20 @@
+{%- comment -%}
+  Ported from src/components/marketing/faq-accordion.tsx
+  Expects `faq_blocks` = section.blocks of type 'faq'. First item open by default.
+  Toggle behaviour + rotate animation handled in global.js (data-faq-*).
+{%- endcomment -%}
+<div class="space-y-4" data-faq>
+  {%- for block in faq_blocks -%}
+    <div class="rounded-[28px] border border-[var(--color-border-soft)] bg-[var(--color-surface-soft)] px-6 py-5 shadow-[0_12px_40px_var(--color-card-shadow)] backdrop-blur-xl" {{ block.shopify_attributes }}>
+      <button type="button" data-faq-toggle class="flex w-full items-center justify-between gap-6 text-left" aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}">
+        <span class="text-lg font-medium text-[var(--color-ink)] sm:text-xl">{{ block.settings.question }}</span>
+        <span data-faq-icon class="text-[var(--color-muted)] transition-transform duration-200 {% if forloop.first %}rotate-45{% endif %}">{% render 'icon', name: 'plus', size: 22 %}</span>
+      </button>
+      <div data-faq-panel class="grid transition-all duration-300 ease-out {% if forloop.first %}grid-rows-[1fr] pt-4 opacity-100{% else %}grid-rows-[0fr] opacity-0{% endif %}">
+        <div class="overflow-hidden">
+          <p class="text-base leading-8 text-[var(--color-muted)]">{{ block.settings.answer }}</p>
+        </div>
+      </div>
+    </div>
+  {%- endfor -%}
+</div>

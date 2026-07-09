@@ -1,0 +1,44 @@
+{%- comment -%}
+  Cart line items. Re-rendered on the server via the Section Rendering API and
+  swapped into the drawer by global.js after every add/update.
+{%- endcomment -%}
+{%- if cart.item_count == 0 -%}
+  <div class="flex h-full flex-col items-center justify-center gap-4 py-20 text-center">
+    <p class="font-display text-2xl text-[var(--color-ink)]">Your cart is empty</p>
+    <p class="max-w-xs text-sm text-[var(--color-muted)]">Explore our recovery systems and add something to begin.</p>
+    <a href="{{ routes.all_products_collection_url }}" class="mt-2 rounded-full border border-[var(--color-border-strong)] px-5 py-2.5 text-sm font-semibold text-[var(--color-ink)] transition hover:bg-[var(--color-overlay-soft)]">Browse all</a>
+  </div>
+{%- else -%}
+  <ul class="flex flex-col gap-5">
+    {%- for item in cart.items -%}
+      <li class="flex gap-4" data-line-item data-line="{{ forloop.index }}">
+        <a href="{{ item.url }}" class="h-24 w-20 shrink-0 overflow-hidden rounded-xl bg-[var(--color-surface-muted)]">
+          {%- if item.image -%}
+            <img src="{{ item.image | image_url: width: 160 }}" alt="{{ item.title | escape }}" width="80" height="96" class="h-full w-full object-cover" loading="lazy">
+          {%- endif -%}
+        </a>
+        <div class="flex flex-1 flex-col">
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <a href="{{ item.url }}" class="text-sm font-semibold text-[var(--color-ink)]">{{ item.product.title }}</a>
+              {%- unless item.variant.title contains 'Default' -%}
+                <p class="text-xs text-[var(--color-muted)]">{{ item.variant.title }}</p>
+              {%- endunless -%}
+            </div>
+            <button type="button" data-cart-remove data-line="{{ forloop.index }}" aria-label="Remove" class="text-[var(--color-muted)] transition-colors hover:text-[var(--color-brand-danger)]">
+              {% render 'icon', name: 'trash', size: 16 %}
+            </button>
+          </div>
+          <div class="mt-auto flex items-center justify-between">
+            <div class="flex items-center gap-3 rounded-full border border-[var(--color-border-strong)] px-3 py-1.5">
+              <button type="button" data-cart-minus data-line="{{ forloop.index }}" aria-label="Decrease" class="text-[var(--color-ink)]">{% render 'icon', name: 'minus', size: 14 %}</button>
+              <span class="min-w-4 text-center text-sm text-[var(--color-ink)]">{{ item.quantity }}</span>
+              <button type="button" data-cart-plus data-line="{{ forloop.index }}" aria-label="Increase" class="text-[var(--color-ink)]">{% render 'icon', name: 'plus', size: 14 %}</button>
+            </div>
+            <span class="text-sm font-semibold text-[var(--color-ink)]">{{ item.final_line_price | money }}</span>
+          </div>
+        </div>
+      </li>
+    {%- endfor -%}
+  </ul>
+{%- endif -%}

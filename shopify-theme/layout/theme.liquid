@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}" class="dark">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="canonical" href="{{ canonical_url }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    {%- if settings.favicon != blank -%}
+      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+    {%- endif -%}
+
+    <title>
+      {{ page_title }}
+      {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+      {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+    </title>
+
+    {% if page_description %}
+      <meta name="description" content="{{ page_description | escape }}">
+    {% endif %}
+
+    {{ content_for_header }}
+
+    {{ 'theme.css' | asset_url | stylesheet_tag }}
+
+    <script>
+      // Apply saved theme (light/dark) before paint to avoid a flash.
+      (function () {
+        try {
+          var t = localStorage.getItem('somara-theme') || 'dark';
+          document.documentElement.classList.toggle('dark', t === 'dark');
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+
+  <body class="min-h-screen bg-[var(--color-paper)] font-sans text-[var(--color-ink)] antialiased">
+    <div class="scroll-progress" aria-hidden="true"></div>
+
+    {%- comment -%} Custom cursor (dot + trailing ring). Ported from ui/custom-cursor.tsx. {%- endcomment -%}
+    <div data-cursor-dot class="custom-cursor pointer-events-none fixed left-0 top-0 z-[100] hidden h-4 w-4 rounded-full bg-[var(--color-ink)] opacity-0 mix-blend-difference md:block" aria-hidden="true"></div>
+    <div data-cursor-ring class="custom-cursor pointer-events-none fixed left-0 top-0 z-[99] hidden h-10 w-10 rounded-full border border-[var(--color-ink)] opacity-0 mix-blend-difference md:block" aria-hidden="true"></div>
+
+    <div class="page-noise fixed inset-0 -z-10 opacity-50" aria-hidden="true"></div>
+
+    {% section 'header' %}
+
+    <main class="flex-1">
+      {{ content_for_layout }}
+    </main>
+
+    {% section 'footer' %}
+
+    {% comment %} Cart + search drawers live here so they overlay every page. {% endcomment %}
+    {% section 'cart-drawer' %}
+    {% section 'search-drawer' %}
+
+    <script src="{{ 'global.js' | asset_url }}" defer></script>
+  </body>
+</html>

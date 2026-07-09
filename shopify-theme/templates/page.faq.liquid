@@ -1,0 +1,28 @@
+{%- comment -%} Ported from src/app/faq/page.tsx. Assign to page handle "faq". {%- endcomment -%}
+{% render 'page-hero',
+  eyebrow: 'FAQ',
+  heading: 'Large-type answers with calm, touch-friendly interactions.',
+  description: 'Use this page for product, service, or onboarding questions while keeping the layout refined on both desktop and mobile.'
+%}
+
+<section class="px-6 pb-16 lg:px-8">
+  <div class="reveal mx-auto max-w-5xl">
+    <div class="space-y-4" data-faq>
+      {%- assign questions = 'Do you offer international shipping?|What is your return policy?|What panel sizes do you offer for red light therapy?|Who are compression boots designed for?' | split: '|' -%}
+      {%- assign answers = "Yes, we ship globally. Shipping costs and delivery times are calculated at checkout based on your location.|We offer a 30-day risk-free home trial. If you don't love it, return it for a full refund. We even cover the return shipping.|Our flagship red light therapy line is positioned around three formats: quarter panel, half panel, and full body panel, so customers can choose the setup that fits their space and recovery goals.|Compression boots are positioned for athletic recovery, circulation support, lymphatic drainage, and muscle recovery, making them especially relevant for performance-focused customers." | split: '|' -%}
+      {%- for q in questions -%}
+        <div class="rounded-[28px] border border-[var(--color-border-soft)] bg-[var(--color-surface-soft)] px-6 py-5 shadow-[0_12px_40px_var(--color-card-shadow)] backdrop-blur-xl">
+          <button type="button" data-faq-toggle class="flex w-full items-center justify-between gap-6 text-left" aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}">
+            <span class="text-lg font-medium text-[var(--color-ink)] sm:text-xl">{{ q }}</span>
+            <span data-faq-icon class="text-[var(--color-muted)] transition-transform duration-200 {% if forloop.first %}rotate-45{% endif %}">{% render 'icon', name: 'plus', size: 22 %}</span>
+          </button>
+          <div data-faq-panel class="grid transition-all duration-300 ease-out {% if forloop.first %}grid-rows-[1fr] pt-4 opacity-100{% else %}grid-rows-[0fr] opacity-0{% endif %}">
+            <div class="overflow-hidden">
+              <p class="text-base leading-8 text-[var(--color-muted)]">{{ answers[forloop.index0] }}</p>
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>

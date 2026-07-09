@@ -1,0 +1,21 @@
+# Theme Check configuration
+# https://shopify.dev/themes/tools/theme-check
+root: "."
+
+# Decorative/marketing images use Tailwind `aspect-[…]` utilities that already
+# reserve their box, so they don't cause layout shift. Downgrade the width/height
+# requirement to a suggestion rather than a hard error.
+ImgWidthAndHeight:
+  enabled: true
+  severity: suggestion
+
+# We intentionally link to /collections, /pages, /blogs with literal paths in a few
+# hand-built nav spots; these resolve correctly on the storefront.
+HardcodedRoutes:
+  enabled: true
+  severity: suggestion
+
+# Google Fonts is loaded from the official CDN by design.
+RemoteAsset:
+  enabled: true
+  severity: suggestion

@@ -1,0 +1,42 @@
+{%- comment -%} Ported from src/app/contact/page.tsx. Form wired to Shopify's contact form. Assign to page handle "contact". {%- endcomment -%}
+{% render 'page-hero',
+  eyebrow: 'Contact',
+  heading: 'A premium inquiry flow that feels light, clear, and conversion-focused.',
+  description: 'Use this form shell for sales, consultation requests, or founder-led outreach until you connect your real backend or scheduling layer.'
+%}
+
+<section class="px-6 pb-16 lg:px-8">
+  <div class="reveal mx-auto grid max-w-7xl gap-6 lg:grid-cols-[0.85fr_1.15fr]">
+    <div class="rounded-[30px] border border-[var(--color-border-soft)] bg-[var(--color-panel-dark)] p-8 text-[var(--color-hero-fg)] shadow-[0_26px_80px_var(--color-card-shadow-strong)]">
+      <p class="text-xs uppercase tracking-[0.28em] text-[var(--color-panel-dark-subtle)]">Reach the team</p>
+      <h2 class="mt-4 font-display text-4xl tracking-[-0.03em]">Let&apos;s shape your launch.</h2>
+      <p class="mt-4 text-sm leading-7 text-[var(--color-panel-dark-muted)]">Replace the placeholder contact details, booking link, and support paths with your real sales or intake workflow.</p>
+      <div class="mt-8 space-y-4 text-sm text-[var(--color-panel-dark-faint)]">
+        <p>hello@aurevia.co</p>
+        <p>Mon-Fri, 9:00 AM to 6:00 PM</p>
+        <p>New York / London / Dubai</p>
+      </div>
+    </div>
+
+    {%- form 'contact', class: 'rounded-[30px] border border-[var(--color-border-soft)] bg-[var(--color-surface-soft)] p-8 shadow-[0_20px_60px_var(--color-card-shadow)]' -%}
+      {%- if form.posted_successfully? -%}
+        <p class="mb-5 rounded-2xl bg-[var(--color-accent-sage)]/30 px-4 py-3 text-sm text-[var(--color-ink)]">Thanks — your message was sent.</p>
+      {%- endif -%}
+      <div class="grid gap-5 sm:grid-cols-2">
+        <label class="text-sm text-[var(--color-muted)]">Name
+          <input name="contact[name]" class="mt-2 min-h-12 w-full rounded-2xl border border-[var(--color-border-strong)] bg-[var(--color-paper)] px-4 text-[var(--color-ink)] outline-none focus:border-[var(--color-brand-highlight)]">
+        </label>
+        <label class="text-sm text-[var(--color-muted)]">Email
+          <input type="email" name="contact[email]" required class="mt-2 min-h-12 w-full rounded-2xl border border-[var(--color-border-strong)] bg-[var(--color-paper)] px-4 text-[var(--color-ink)] outline-none focus:border-[var(--color-brand-highlight)]">
+        </label>
+        <label class="text-sm text-[var(--color-muted)] sm:col-span-2">Company
+          <input name="contact[company]" class="mt-2 min-h-12 w-full rounded-2xl border border-[var(--color-border-strong)] bg-[var(--color-paper)] px-4 text-[var(--color-ink)] outline-none focus:border-[var(--color-brand-highlight)]">
+        </label>
+        <label class="text-sm text-[var(--color-muted)] sm:col-span-2">What are you building?
+          <textarea name="contact[body]" class="mt-2 min-h-36 w-full rounded-[24px] border border-[var(--color-border-strong)] bg-[var(--color-paper)] px-4 py-3 text-[var(--color-ink)] outline-none focus:border-[var(--color-brand-highlight)]"></textarea>
+        </label>
+      </div>
+      <button type="submit" class="mt-6 rounded-full bg-[var(--color-brand-primary)] px-5 py-3 text-sm font-semibold text-[var(--color-paper)] transition hover:bg-[var(--color-brand-secondary)]">Send inquiry</button>
+    {%- endform -%}
+  </div>
+</section>

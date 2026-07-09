@@ -1,0 +1,9 @@
+{%- comment -%} Single blog article. {%- endcomment -%}
+<article class="mx-auto max-w-3xl px-6 pb-16 pt-28 lg:px-8 lg:pt-36">
+  <p class="text-xs font-bold uppercase tracking-[0.18em] text-[var(--color-muted)]">{{ article.published_at | date: '%b %d, %Y' }}</p>
+  <h1 class="mt-3 font-display text-4xl tracking-[-0.03em] text-[var(--color-ink)] sm:text-5xl">{{ article.title }}</h1>
+  {%- if article.image -%}
+    <img src="{{ article.image | image_url: width: 1200 }}" alt="{{ article.title | escape }}" class="mt-8 w-full rounded-3xl object-cover">
+  {%- endif -%}
+  <div class="prose mt-8 max-w-none text-sm leading-7 text-[var(--color-muted)]">{{ article.content }}</div>
+</article>

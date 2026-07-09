@@ -1,0 +1,53 @@
+{%- comment -%} Account dashboard — themed to match Somara Labs (inspired by src/app/profile/page.tsx). {%- endcomment -%}
+<section class="mx-auto max-w-5xl px-6 pb-16 pt-36 lg:px-8">
+  <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+    <div>
+      <h1 class="font-display text-5xl tracking-[-0.04em] text-[var(--color-ink)]">Hello, {{ customer.first_name | default: 'there' }}</h1>
+      <p class="mt-2 text-sm text-[var(--color-muted)]">{{ customer.email }}</p>
+    </div>
+    <a href="{{ routes.account_logout_url }}" class="inline-flex items-center justify-center rounded-full border border-[var(--color-border-strong)] px-5 py-2.5 text-sm font-semibold text-[var(--color-ink)] transition hover:bg-[var(--color-overlay-soft)]">Logout</a>
+  </div>
+
+  <div class="mt-12 grid gap-6 lg:grid-cols-[1.6fr_1fr]">
+    <div class="rounded-[32px] border border-[var(--color-border-soft)] bg-[var(--color-surface-soft)] p-8 shadow-[0_20px_60px_var(--color-card-shadow)]">
+      <h2 class="font-display text-2xl text-[var(--color-ink)]">Order history</h2>
+      {%- if customer.orders.size > 0 -%}
+        <div class="mt-6 overflow-x-auto">
+          <table class="w-full text-left text-sm">
+            <thead class="text-[var(--color-muted)]">
+              <tr class="border-b border-[var(--color-border-soft)]">
+                <th class="py-3 pr-4 font-medium">Order</th>
+                <th class="py-3 pr-4 font-medium">Date</th>
+                <th class="py-3 pr-4 font-medium">Payment</th>
+                <th class="py-3 font-medium">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {%- for order in customer.orders -%}
+                <tr class="border-b border-[var(--color-border-soft)] text-[var(--color-ink)]">
+                  <td class="py-3 pr-4"><a href="{{ order.customer_url }}" class="font-semibold hover:underline">{{ order.name }}</a></td>
+                  <td class="py-3 pr-4">{{ order.created_at | date: '%b %-d, %Y' }}</td>
+                  <td class="py-3 pr-4">{{ order.financial_status_label }}</td>
+                  <td class="py-3">{{ order.total_net_amount | money }}</td>
+                </tr>
+              {%- endfor -%}
+            </tbody>
+          </table>
+        </div>
+      {%- else -%}
+        <p class="mt-4 text-sm text-[var(--color-muted)]">You haven't placed any orders yet.</p>
+        <a href="{{ routes.all_products_collection_url }}" class="mt-6 inline-flex rounded-full bg-[var(--color-ink)] px-5 py-3 text-sm font-semibold text-[var(--color-paper)] transition hover:bg-[var(--color-ink-soft)]">Start shopping</a>
+      {%- endif -%}
+    </div>
+
+    <div class="rounded-[32px] border border-[var(--color-border-soft)] bg-[var(--color-surface-soft)] p-8 shadow-[0_20px_60px_var(--color-card-shadow)]">
+      <h2 class="font-display text-2xl text-[var(--color-ink)]">Default address</h2>
+      {%- if customer.default_address -%}
+        <div class="mt-4 text-sm leading-7 text-[var(--color-muted)]">{{ customer.default_address | format_address }}</div>
+      {%- else -%}
+        <p class="mt-4 text-sm text-[var(--color-muted)]">No address saved.</p>
+      {%- endif -%}
+      <a href="{{ routes.account_addresses_url }}" class="mt-6 inline-flex rounded-full border border-[var(--color-border-strong)] px-5 py-2.5 text-sm font-semibold text-[var(--color-ink)] transition hover:bg-[var(--color-overlay-soft)]">Manage addresses</a>
+    </div>
+  </div>
+</section>

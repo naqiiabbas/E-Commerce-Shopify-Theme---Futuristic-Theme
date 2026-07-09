@@ -1,0 +1,49 @@
+{%- comment -%} Ported from src/app/testimonials/page.tsx. Assign to page handle "reviews". {%- endcomment -%}
+{% render 'page-hero',
+  eyebrow: 'Testimonials',
+  heading: 'Social proof presented with editorial polish.',
+  description: 'This page gives you both credibility and visual texture, with a premium testimonial rail and a masonry layout for deeper proof.'
+%}
+
+{%- assign quotes = "The red light panel became the center of my recovery routine within a week. It feels like performance equipment, but refined enough to live in a luxury home gym.|The compression boots are the perfect complement to the panels. Recovery is faster, my legs feel lighter, and the whole setup feels premium from end to end.|Somara Labs has a much sharper point of view than a generic wellness store. The focus on red light therapy gives the brand real authority in premium recovery." | split: '|' -%}
+{%- assign names = 'Sarah Jenkins|Marcus T.|Elena Rodriguez' | split: '|' -%}
+{%- assign roles = 'Verified Buyer,|Verified Buyer,|Wellness Editor,Vogue' | split: '|' -%}
+
+{%- comment -%} Marquee rail {%- endcomment -%}
+<section class="px-6 pb-8 lg:px-8">
+  <div class="reveal mx-auto max-w-7xl">
+    <div class="overflow-hidden rounded-[32px] border border-[var(--color-border-soft)] bg-[var(--color-panel-dark)] py-5 text-[var(--color-hero-fg)] shadow-[0_22px_70px_var(--color-card-shadow-strong)]">
+      <div class="marquee-track flex min-w-max gap-4 px-4">
+        {%- for round in (1..2) -%}
+          {%- for q in quotes -%}
+            {%- assign role_pair = roles[forloop.index0] | split: ',' -%}
+            <div class="w-[320px] shrink-0 rounded-[24px] border border-[var(--color-border-inverse)] bg-[var(--color-surface-muted)] p-5 backdrop-blur">
+              <p class="text-sm leading-7 text-[var(--color-panel-dark-faint)]">{{ q }}</p>
+              <p class="mt-4 text-sm font-semibold">{{ names[forloop.index0] }}</p>
+              <p class="text-xs uppercase tracking-[0.18em] text-[var(--color-panel-dark-subtle)]">{{ role_pair[0] }} · {{ role_pair[1] }}</p>
+            </div>
+          {%- endfor -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{%- comment -%} Masonry cards {%- endcomment -%}
+<section class="px-6 pb-16 lg:px-8">
+  <div class="mx-auto max-w-7xl columns-1 gap-6 md:columns-2 xl:columns-3">
+    {%- for q in quotes -%}
+      {%- assign role_pair = roles[forloop.index0] | split: ',' -%}
+      <div class="mb-6">
+        <article class="reveal break-inside-avoid rounded-[28px] border border-[var(--color-border-soft)] bg-[var(--color-surface-soft)] p-6 shadow-[0_14px_44px_var(--color-card-shadow)] backdrop-blur-xl" style="--reveal-delay:{{ forloop.index0 | times: 0.05 }}s">
+          <div class="mb-4 flex gap-1 text-[var(--color-accent-peach)]">
+            {%- for i in (1..5) -%}{% render 'icon', name: 'star', size: 16, fill: 'currentColor' %}{%- endfor -%}
+          </div>
+          <p class="text-base leading-8 text-[var(--color-ink)]">{{ q }}</p>
+          <p class="mt-5 text-sm font-semibold text-[var(--color-ink)]">{{ names[forloop.index0] }}</p>
+          <p class="text-sm text-[var(--color-muted)]">{{ role_pair[0] }}, {{ role_pair[1] }}</p>
+        </article>
+      </div>
+    {%- endfor -%}
+  </div>
+</section>

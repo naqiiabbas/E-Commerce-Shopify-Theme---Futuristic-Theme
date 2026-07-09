@@ -1,0 +1,172 @@
+@import "tailwindcss";
+
+:root {
+  --color-paper: #f8f3ec;
+  --color-paper-strong: #efe6d9;
+  --color-surface: rgba(255, 255, 255, 0.74);
+  --color-surface-strong: rgba(255, 255, 255, 0.92);
+  --color-surface-soft: rgba(255, 255, 255, 0.84);
+  --color-surface-muted: rgba(37, 43, 40, 0.06);
+  --color-ink: #252b28;
+  --color-ink-soft: #34403b;
+  --color-muted: #6d756d;
+  --color-ink-inverse: #f2efe9;
+  --color-accent-sage: #cedfcf;
+  --color-accent-blue: #d8e7f0;
+  --color-accent-peach: #eccdb9;
+  --color-accent-lavender: #ddd7ed;
+  --color-brand-primary: #252b28;
+  --color-brand-secondary: #34403b;
+  --color-brand-highlight: #8caec3;
+  --color-brand-glow: rgba(36, 42, 38, 0.18);
+  --color-brand-danger: #d86b6b;
+  --color-border-soft: rgba(37, 43, 40, 0.12);
+  --color-border-strong: rgba(37, 43, 40, 0.18);
+  --color-border-inverse: rgba(37, 43, 40, 0.1);
+  --color-overlay: rgba(0, 0, 0, 0.32);
+  --color-overlay-soft: rgba(0, 0, 0, 0.05);
+  --color-overlay-strong: rgba(0, 0, 0, 0.1);
+  --color-scrim: rgba(0, 0, 0, 0.35);
+  --color-hero-bg: #ece5db;
+  --color-hero-fg: #252b28;
+  --color-hero-muted: rgba(37, 43, 40, 0.72);
+  --color-marquee-bg: #252b28;
+  --color-marquee-fg: rgba(248, 243, 236, 0.82);
+  --color-footer-bg: rgba(244, 239, 231, 0.78);
+  --color-panel-dark: rgba(255, 252, 247, 0.96);
+  --color-panel-dark-muted: rgba(37, 43, 40, 0.72);
+  --color-panel-dark-subtle: rgba(37, 43, 40, 0.5);
+  --color-panel-dark-faint: rgba(37, 43, 40, 0.82);
+  --color-cta-bubble: #7aa8df;
+  --color-cta-bubble-shadow: rgba(122, 168, 223, 0.28);
+  --color-card-shadow: rgba(53, 56, 47, 0.08);
+  --color-card-shadow-strong: rgba(35, 41, 37, 0.12);
+  --color-redlight-base: #271110;
+  --color-redlight-shadow: rgba(119, 21, 12, 0.18);
+  --color-redlight-overlay-start: rgba(67, 11, 11, 0.12);
+  --color-redlight-overlay-end: rgba(18, 3, 3, 0.5);
+  --color-redlight-side-glow: rgba(127, 23, 15, 0.2);
+  --color-redlight-line: rgba(255, 240, 235, 0.9);
+  --color-redlight-line-soft: rgba(255, 240, 235, 0.82);
+  --color-redlight-text: rgba(255, 240, 235, 0.86);
+}
+
+@theme inline {
+  --font-sans: var(--font-sans);
+  --font-display: var(--font-display);
+}
+
+.dark {
+  --color-paper: #15181b;
+  --color-paper-strong: #1e2327;
+  --color-surface: rgba(255, 255, 255, 0.05);
+  --color-surface-strong: rgba(255, 255, 255, 0.08);
+  --color-surface-soft: rgba(255, 255, 255, 0.1);
+  --color-surface-muted: rgba(255, 255, 255, 0.06);
+  --color-ink: #f2efe9;
+  --color-ink-soft: #ffffff;
+  --color-muted: #bbc0bc;
+  --color-ink-inverse: #15181b;
+  --color-accent-sage: #7d9680;
+  --color-accent-blue: #758ea3;
+  --color-accent-peach: #ba9382;
+  --color-accent-lavender: #9f94ba;
+  --color-brand-primary: #f2efe9;
+  --color-brand-secondary: #ffffff;
+  --color-brand-highlight: #758ea3;
+  --color-brand-glow: rgba(255, 255, 255, 0.12);
+  --color-brand-danger: #f08f8f;
+  --color-border-soft: rgba(255, 255, 255, 0.1);
+  --color-border-strong: rgba(255, 255, 255, 0.18);
+  --color-border-inverse: rgba(255, 255, 255, 0.12);
+  --color-overlay: rgba(0, 0, 0, 0.45);
+  --color-overlay-soft: rgba(255, 255, 255, 0.06);
+  --color-overlay-strong: rgba(255, 255, 255, 0.1);
+  --color-scrim: rgba(0, 0, 0, 0.58);
+  --color-hero-bg: #0d1012;
+  --color-hero-fg: #f2efe9;
+  --color-hero-muted: rgba(242, 239, 233, 0.72);
+  --color-marquee-bg: #000000;
+  --color-marquee-fg: rgba(255, 255, 255, 0.8);
+  --color-footer-bg: rgba(30, 35, 39, 0.74);
+  --color-panel-dark: rgba(20, 24, 28, 0.95);
+  --color-panel-dark-muted: rgba(242, 239, 233, 0.72);
+  --color-panel-dark-subtle: rgba(242, 239, 233, 0.5);
+  --color-panel-dark-faint: rgba(242, 239, 233, 0.78);
+  --color-cta-bubble: #60a5fa;
+  --color-cta-bubble-shadow: rgba(96, 165, 250, 0.3);
+  --color-card-shadow: rgba(0, 0, 0, 0.24);
+  --color-card-shadow-strong: rgba(0, 0, 0, 0.32);
+  --color-redlight-base: #200908;
+  --color-redlight-shadow: rgba(119, 21, 12, 0.24);
+  --color-redlight-overlay-start: rgba(67, 11, 11, 0.2);
+  --color-redlight-overlay-end: rgba(18, 3, 3, 0.66);
+  --color-redlight-side-glow: rgba(127, 23, 15, 0.3);
+  --color-redlight-line: rgba(255, 240, 235, 0.9);
+  --color-redlight-line-soft: rgba(255, 240, 235, 0.82);
+  --color-redlight-text: rgba(255, 240, 235, 0.86);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-paper);
+}
+
+a,
+button,
+input,
+textarea {
+  transition:
+    color 220ms ease,
+    background-color 220ms ease,
+    border-color 220ms ease,
+    transform 220ms ease,
+    box-shadow 220ms ease;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--color-accent-sage) 70%, transparent);
+  color: var(--color-brand-primary);
+}
+
+.page-noise {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.03)),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.08'%3E%3Ccircle cx='10' cy='10' r='1'/%3E%3Ccircle cx='80' cy='30' r='1'/%3E%3Ccircle cx='130' cy='60' r='1'/%3E%3Ccircle cx='30' cy='110' r='1'/%3E%3Ccircle cx='100' cy='140' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+.ambient-orb {
+  border-radius: 9999px;
+  filter: blur(50px);
+  pointer-events: none;
+}
+
+.marquee-track {
+  animation: marquee 36s linear infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .marquee-track {
+    animation: none;
+  }
+}

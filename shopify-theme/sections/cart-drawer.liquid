@@ -1,0 +1,42 @@
+{%- comment -%}
+  Slide-in cart drawer. Mirrors src/components/layout/cart-drawer.tsx but uses
+  Shopify's native cart. Quantity / remove actions hit the AJAX Cart API in global.js.
+{%- endcomment -%}
+<div data-cart-root class="pointer-events-none fixed inset-0 z-[60]" aria-hidden="true">
+  {%- comment -%} Scrim {%- endcomment -%}
+  <div data-cart-scrim class="absolute inset-0 bg-[var(--color-scrim)] opacity-0 transition-opacity duration-300"></div>
+
+  {%- comment -%} Panel {%- endcomment -%}
+  <aside
+    data-cart-panel
+    class="absolute right-0 top-0 flex h-full w-full max-w-md translate-x-full flex-col border-l border-[var(--color-border-soft)] bg-[var(--color-paper)] shadow-2xl transition-transform duration-300 ease-out sm:max-w-md"
+    role="dialog"
+    aria-label="Shopping cart"
+  >
+    <div class="flex items-center justify-between border-b border-[var(--color-border-soft)] px-6 py-5">
+      <p class="font-display text-2xl tracking-[-0.03em] text-[var(--color-ink)]">Your Cart</p>
+      <button type="button" data-close-cart aria-label="Close cart" class="text-[var(--color-muted)] transition-colors hover:text-[var(--color-ink)]">
+        {% render 'icon', name: 'x', size: 22 %}
+      </button>
+    </div>
+
+    <div data-cart-body class="flex-1 overflow-y-auto px-6 py-6">
+      {% render 'cart-items' %}
+    </div>
+
+    <div data-cart-footer class="border-t border-[var(--color-border-soft)] px-6 py-6 {% if cart.item_count == 0 %}hidden{% endif %}">
+      <div class="flex items-center justify-between text-sm text-[var(--color-muted)]">
+        <span>Subtotal</span>
+        <span data-cart-subtotal class="text-base font-semibold text-[var(--color-ink)]">{{ cart.total_price | money }}</span>
+      </div>
+      <p class="mt-1 text-xs text-[var(--color-muted)]">Shipping &amp; taxes calculated at checkout.</p>
+      <a href="{{ routes.cart_url }}/checkout" class="mt-5 flex w-full items-center justify-center rounded-full bg-[var(--color-ink)] px-6 py-4 text-sm font-semibold text-[var(--color-paper)] transition hover:bg-[var(--color-ink-soft)]">
+        Checkout
+      </a>
+    </div>
+  </aside>
+</div>
+
+{% schema %}
+{ "name": "Cart drawer", "settings": [] }
+{% endschema %}

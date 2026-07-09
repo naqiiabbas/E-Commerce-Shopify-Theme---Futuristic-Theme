@@ -1,0 +1,46 @@
+{%- comment -%}
+  Homepage product card — ported from the ProductCard in marketing/cards.tsx.
+  Param: card_product (a Shopify product object, chosen in the theme editor).
+  If no product is selected/exists yet, a placeholder prompts the merchant to pick one.
+{%- endcomment -%}
+{%- assign p = card_product -%}
+{%- if p == blank or p == empty -%}
+  <article class="flex aspect-[3/4] flex-col items-center justify-center rounded-[24px] border border-dashed border-[var(--color-border-strong)] bg-[var(--color-surface)] p-8 text-center">
+    <p class="font-display text-2xl text-[var(--color-ink)]">Choose a product</p>
+    <p class="mt-2 text-sm text-[var(--color-muted)]">In Customize → Home → Product showcase, pick which product to feature here.</p>
+  </article>
+{%- else -%}
+  {%- assign hover_image = p.images[1] -%}
+  <article class="group flex flex-col overflow-hidden rounded-[24px] border border-[var(--color-border-soft)] bg-[var(--color-surface)] p-4 transition hover:bg-[var(--color-surface-soft)]">
+    <a href="{{ p.url }}" class="block">
+      <div class="relative aspect-[4/5] w-full overflow-hidden rounded-[18px] bg-[var(--color-paper)]">
+        {%- if p.featured_image -%}
+          <img src="{{ p.featured_image | image_url: width: 700 }}" alt="{{ p.title | escape }}" width="700" height="875" loading="lazy" class="h-full w-full object-cover transition duration-700 {% if hover_image %}opacity-100 group-hover:scale-100 group-hover:opacity-0{% else %}group-hover:scale-105{% endif %}">
+        {%- endif -%}
+        {%- if hover_image -%}
+          <img src="{{ hover_image | image_url: width: 700 }}" alt="{{ p.title | escape }} alternate view" width="700" height="875" loading="lazy" class="absolute inset-0 h-full w-full object-cover opacity-0 transition duration-700 group-hover:scale-105 group-hover:opacity-100">
+        {%- endif -%}
+        <div class="absolute left-4 top-4 rounded-full bg-[var(--color-surface-strong)] px-3 py-1 text-xs font-semibold uppercase tracking-widest text-[var(--color-ink)] backdrop-blur-md">{% if p.price_varies %}From {% endif %}{{ p.price | money }}</div>
+      </div>
+    </a>
+    <div class="mt-5 flex flex-1 flex-col justify-between px-2">
+      <div>
+        <a href="{{ p.url }}" class="inline-block">
+          <h3 class="font-display text-2xl text-[var(--color-ink)] transition-colors group-hover:text-[var(--color-ink-soft)]">{{ p.title }}</h3>
+        </a>
+        <p class="mt-1 text-sm text-[var(--color-muted)]">{{ p.metafields.custom.tagline | default: p.description | strip_html | truncatewords: 10 }}</p>
+      </div>
+      <div class="mt-6 flex gap-3">
+        <a href="{{ p.url }}" class="inline-flex h-12 flex-1 items-center justify-center rounded-full border border-[var(--color-border-soft)] bg-[var(--color-surface-soft)] text-sm font-medium text-[var(--color-ink)] transition hover:bg-[var(--color-surface-strong)]">View Details</a>
+        {%- if p.available -%}
+          <form method="post" action="/cart/add" class="flex-1">
+            <input type="hidden" name="id" value="{{ p.selected_or_first_available_variant.id }}">
+            <button type="submit" class="inline-flex h-12 w-full items-center justify-center rounded-full bg-[var(--color-brand-primary)] text-sm font-medium text-[var(--color-paper)] transition hover:bg-[var(--color-brand-secondary)]">Add to Cart</button>
+          </form>
+        {%- else -%}
+          <span class="inline-flex h-12 flex-1 items-center justify-center rounded-full bg-[var(--color-surface-muted)] text-sm font-medium text-[var(--color-muted)]">Sold out</span>
+        {%- endif -%}
+      </div>
+    </div>
+  </article>
+{%- endif -%}

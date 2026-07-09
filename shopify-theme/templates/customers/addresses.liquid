@@ -1,0 +1,33 @@
+{%- comment -%} Address book — themed, using Shopify's address forms. {%- endcomment -%}
+<section class="mx-auto max-w-4xl px-6 pb-16 pt-36 lg:px-8">
+  <div class="flex items-center justify-between">
+    <h1 class="font-display text-4xl tracking-[-0.03em] text-[var(--color-ink)]">Your addresses</h1>
+    <a href="{{ routes.account_url }}" class="text-sm font-semibold text-[var(--color-ink)] hover:underline">Back to account</a>
+  </div>
+
+  {%- comment -%} New address {%- endcomment -%}
+  <div class="mt-10 rounded-[28px] border border-[var(--color-border-soft)] bg-[var(--color-surface-soft)] p-8">
+    <h2 class="font-display text-2xl text-[var(--color-ink)]">Add a new address</h2>
+    {%- form 'customer_address', customer.new_address, class: 'mt-6 grid gap-4 sm:grid-cols-2' -%}
+      <input name="address[first_name]" placeholder="First name" class="rounded-xl border border-[var(--color-border-strong)] bg-[var(--color-paper)] px-4 py-3 text-sm text-[var(--color-ink)]">
+      <input name="address[last_name]" placeholder="Last name" class="rounded-xl border border-[var(--color-border-strong)] bg-[var(--color-paper)] px-4 py-3 text-sm text-[var(--color-ink)]">
+      <input name="address[address1]" placeholder="Address" class="rounded-xl border border-[var(--color-border-strong)] bg-[var(--color-paper)] px-4 py-3 text-sm text-[var(--color-ink)] sm:col-span-2">
+      <input name="address[city]" placeholder="City" class="rounded-xl border border-[var(--color-border-strong)] bg-[var(--color-paper)] px-4 py-3 text-sm text-[var(--color-ink)]">
+      <input name="address[zip]" placeholder="ZIP / Postcode" class="rounded-xl border border-[var(--color-border-strong)] bg-[var(--color-paper)] px-4 py-3 text-sm text-[var(--color-ink)]">
+      <input name="address[country]" placeholder="Country" class="rounded-xl border border-[var(--color-border-strong)] bg-[var(--color-paper)] px-4 py-3 text-sm text-[var(--color-ink)] sm:col-span-2">
+      <button type="submit" class="rounded-full bg-[var(--color-ink)] px-5 py-3 text-sm font-semibold text-[var(--color-paper)] transition hover:bg-[var(--color-ink-soft)] sm:col-span-2 sm:justify-self-start">Save address</button>
+    {%- endform -%}
+  </div>
+
+  {%- comment -%} Existing addresses {%- endcomment -%}
+  <div class="mt-8 grid gap-4 sm:grid-cols-2">
+    {%- for address in customer.addresses -%}
+      <div class="rounded-[24px] border border-[var(--color-border-soft)] bg-[var(--color-surface-soft)] p-6">
+        <div class="text-sm leading-7 text-[var(--color-muted)]">{{ address | format_address }}</div>
+        <a href="{{ routes.account_addresses_url }}" class="mt-4 inline-block text-sm font-semibold text-[var(--color-ink)] hover:underline">Manage</a>
+      </div>
+    {%- else -%}
+      <p class="text-sm text-[var(--color-muted)]">No saved addresses yet.</p>
+    {%- endfor -%}
+  </div>
+</section>

@@ -1,0 +1,27 @@
+{%- comment -%}
+  Product card with image-swap on hover. Mirrors the look of the Next.js
+  product cards (marketing/cards.tsx). Pass: card_product (a product object).
+{%- endcomment -%}
+{%- assign p = card_product -%}
+<a href="{{ p.url }}" class="group flex flex-col overflow-hidden rounded-3xl border border-[var(--color-border-soft)] bg-[var(--color-surface)] shadow-[0_12px_42px_var(--color-card-shadow)] transition-all duration-500 hover:shadow-[0_24px_60px_var(--color-card-shadow-strong)]">
+  <div class="relative aspect-[4/5] w-full overflow-hidden bg-[var(--color-surface-muted)]">
+    {%- if p.featured_image -%}
+      <img src="{{ p.featured_image | image_url: width: 700 }}" alt="{{ p.title | escape }}" width="700" height="875" loading="lazy" class="absolute inset-0 h-full w-full object-cover transition-opacity duration-500 {% if p.images[1] %}group-hover:opacity-0{% endif %}">
+      {%- if p.images[1] -%}
+        <img src="{{ p.images[1] | image_url: width: 700 }}" alt="{{ p.title | escape }}" width="700" height="875" loading="lazy" class="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+  <div class="flex flex-1 flex-col gap-1 p-5">
+    <p class="font-display text-xl tracking-[-0.02em] text-[var(--color-ink)]">{{ p.title }}</p>
+    {%- if p.description != blank -%}
+      <p class="line-clamp-2 text-sm text-[var(--color-muted)]">{{ p.description | strip_html | truncatewords: 14 }}</p>
+    {%- endif -%}
+    <div class="mt-3 flex items-center justify-between">
+      <span class="text-sm font-semibold text-[var(--color-ink)]">
+        {%- if p.price_varies -%}From {% endif -%}{{ p.price | money }}
+      </span>
+      <span class="text-sm font-medium text-[var(--color-muted)] transition-colors group-hover:text-[var(--color-ink)]">View {% render 'icon', name: 'arrow-right', size: 14 %}</span>
+    </div>
+  </div>
+</a>

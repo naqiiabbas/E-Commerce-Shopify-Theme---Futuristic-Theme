@@ -1,0 +1,47 @@
+{%- comment -%} Technology page — designed to match the Somara Labs theme. Assign to page handle "technology". {%- endcomment -%}
+{% render 'page-hero',
+  eyebrow: 'Technology',
+  heading: 'The science engineered into every Somara Labs recovery system.',
+  description: 'Clinical-grade red light, full-spectrum heat, and pneumatic compression — built to deliver measurable, repeatable recovery at home.',
+  primary_label: 'Shop the lineup',
+  primary_link: '/collections/all'
+%}
+
+{%- comment -%} Core technology cards {%- endcomment -%}
+<section class="px-6 pb-8 lg:px-8">
+  <div class="mx-auto grid max-w-7xl gap-6 sm:grid-cols-2 lg:grid-cols-2">
+    {%- assign t_titles = 'Red & near-infrared light|Irradiance that matters|Full-spectrum heat|Pneumatic compression' | split: '|' -%}
+    {%- assign t_descs = 'Dual 660nm red and 850nm near-infrared wavelengths target the skin surface and deeper tissue in a single session — the combination most associated with recovery and skin health.|High, measured irradiance at real treatment distance means efficient, consistent sessions instead of vague exposure. The panels are built around output you can actually feel.|Even, enveloping dry-sauna heat raises core temperature gradually to support circulation, detox, and deep relaxation as part of an evening or post-training ritual.|Sequential air compression moves through the legs in waves to support circulation and lymphatic drainage — the recovery language athletes already trust.' | split: '|' -%}
+    {%- assign t_icons = 'sun,zap,shield-check,moon' | split: ',' -%}
+    {%- for title in t_titles -%}
+      <div class="reveal rounded-[30px] border border-[var(--color-border-soft)] bg-[var(--color-surface-soft)] p-8 shadow-[0_18px_50px_var(--color-card-shadow)]" style="--reveal-delay:{{ forloop.index0 | times: 0.07 }}s">
+        <div class="flex h-14 w-14 items-center justify-center rounded-full bg-[var(--color-accent-peach)]/20 text-[var(--color-accent-peach)]">{% render 'icon', name: t_icons[forloop.index0], size: 26 %}</div>
+        <h3 class="mt-6 font-display text-3xl tracking-[-0.03em] text-[var(--color-ink)]">{{ title }}</h3>
+        <p class="mt-3 text-sm leading-7 text-[var(--color-muted)]">{{ t_descs[forloop.index0] }}</p>
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+{%- comment -%} Spec strip {%- endcomment -%}
+<section class="px-6 py-14 lg:px-8 lg:py-20">
+  <div class="mx-auto max-w-7xl rounded-[36px] border border-[var(--color-border-soft)] bg-[var(--color-panel-dark)] p-8 text-[var(--color-hero-fg)] shadow-[0_28px_90px_var(--color-card-shadow-strong)] lg:p-12">
+    <div class="reveal grid gap-10 text-center sm:grid-cols-3">
+      {%- assign spec_values = '660 + 850nm|3 sizes|30-Day' | split: '|' -%}
+      {%- assign spec_labels = 'dual red & near-infrared wavelengths|quarter, half, and full body panels|risk-free home trial on every system' | split: '|' -%}
+      {%- for v in spec_values -%}
+        <div>
+          <p class="font-display text-5xl tracking-[-0.03em] text-[var(--color-hero-fg)]">{{ v }}</p>
+          <p class="mt-3 text-sm text-[var(--color-panel-dark-muted)]">{{ spec_labels[forloop.index0] }}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{%- comment -%} Optional editable body from the Shopify page {%- endcomment -%}
+{%- if page.content != blank -%}
+  <section class="px-6 pb-16 lg:px-8">
+    <article class="reveal mx-auto max-w-3xl text-sm leading-8 text-[var(--color-muted)]">{{ page.content }}</article>
+  </section>
+{%- endif -%}

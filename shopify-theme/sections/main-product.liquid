@@ -1,0 +1,98 @@
+{%- comment -%} Product page. Gallery + variant picker + add-to-cart (drives the cart drawer). {%- endcomment -%}
+<section class="mx-auto max-w-7xl px-6 pb-12 pt-28 lg:px-8 lg:pt-36">
+  <div class="grid gap-12 lg:grid-cols-2">
+    {%- comment -%} Gallery {%- endcomment -%}
+    <div class="flex flex-col gap-4">
+      <div class="overflow-hidden rounded-3xl border border-[var(--color-border-soft)] bg-[var(--color-surface-muted)]">
+        {%- if product.featured_image -%}
+          <img id="product-main-image" src="{{ product.featured_image | image_url: width: 1100 }}" alt="{{ product.title | escape }}" width="1100" height="1100" class="h-full w-full object-cover">
+        {%- endif -%}
+      </div>
+      {%- if product.images.size > 1 -%}
+        <div class="grid grid-cols-5 gap-3">
+          {%- for image in product.images limit: 5 -%}
+            <button type="button" class="overflow-hidden rounded-xl border border-[var(--color-border-soft)]" onclick="document.getElementById('product-main-image').src='{{ image | image_url: width: 1100 }}'">
+              <img src="{{ image | image_url: width: 200 }}" alt="{{ product.title | escape }}" width="200" height="200" loading="lazy" class="aspect-square w-full object-cover">
+            </button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Details {%- endcomment -%}
+    <div class="flex flex-col">
+      <p class="text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-muted)]">{{ product.type | default: 'Recovery System' }}</p>
+      <h1 class="mt-3 font-display text-4xl tracking-[-0.03em] text-[var(--color-ink)] sm:text-5xl">{{ product.title }}</h1>
+      <p class="mt-4 text-2xl font-semibold text-[var(--color-ink)]" data-product-price>{{ product.selected_or_first_available_variant.price | money }}</p>
+
+      <form method="post" action="/cart/add" class="mt-8 flex flex-col gap-5">
+        <input type="hidden" name="form_type" value="product">
+        <input type="hidden" name="utf8" value="✓">
+
+        {%- unless product.has_only_default_variant -%}
+          {%- for option in product.options_with_values -%}
+            <div>
+              <label class="text-sm font-semibold text-[var(--color-ink)]">{{ option.name }}</label>
+              <div class="mt-2 flex flex-wrap gap-2">
+                {%- for value in option.values -%}
+                  <label class="cursor-pointer rounded-full border border-[var(--color-border-strong)] px-4 py-2 text-sm text-[var(--color-ink)] transition hover:bg-[var(--color-overlay-soft)] has-[:checked]:bg-[var(--color-ink)] has-[:checked]:text-[var(--color-paper)]">
+                    <input type="radio" name="option-{{ option.position }}" value="{{ value | escape }}" class="sr-only" {% if option.selected_value == value %}checked{% endif %} data-option-selector>
+                    {{ value }}
+                  </label>
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endfor -%}
+        {%- endunless -%}
+
+        <select name="id" class="sr-only" data-variant-select>
+          {%- for variant in product.variants -%}
+            <option value="{{ variant.id }}" {% unless variant.available %}disabled{% endunless %} {% if variant == product.selected_or_first_available_variant %}selected{% endif %}>{{ variant.title }}</option>
+          {%- endfor -%}
+        </select>
+
+        <div class="flex items-center gap-4">
+          <div class="flex items-center gap-3 rounded-full border border-[var(--color-border-strong)] px-4 py-2.5">
+            <button type="button" aria-label="Decrease" onclick="var q=this.parentNode.querySelector('input');q.value=Math.max(1,parseInt(q.value)-1)">{% render 'icon', name: 'minus', size: 16 %}</button>
+            <input type="number" name="quantity" value="1" min="1" class="w-10 bg-transparent text-center text-sm text-[var(--color-ink)] outline-none">
+            <button type="button" aria-label="Increase" onclick="var q=this.parentNode.querySelector('input');q.value=parseInt(q.value)+1">{% render 'icon', name: 'plus', size: 16 %}</button>
+          </div>
+          <button type="submit" class="flex flex-1 items-center justify-center rounded-full bg-[var(--color-ink)] px-8 py-4 text-sm font-semibold text-[var(--color-paper)] transition hover:bg-[var(--color-ink-soft)] disabled:opacity-50" {% unless product.available %}disabled{% endunless %}>
+            {%- if product.available -%}Add to cart{%- else -%}Sold out{%- endif -%}
+          </button>
+        </div>
+      </form>
+
+      {%- if product.description != blank -%}
+        <div class="prose mt-10 max-w-none border-t border-[var(--color-border-soft)] pt-8 text-sm leading-7 text-[var(--color-muted)]">
+          {{ product.description }}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+<script>
+  // Sync the radio option selectors to the hidden variant <select> so the
+  // correct variant id is submitted, and update the displayed price.
+  (function () {
+    const form = document.currentScript.closest('section');
+    if (!form) return;
+    const select = form.querySelector('[data-variant-select]');
+    const priceEl = form.querySelector('[data-product-price]');
+    const variants = {{ product.variants | json }};
+    function update() {
+      const chosen = Array.from(form.querySelectorAll('[data-option-selector]:checked')).map(i => i.value);
+      const match = variants.find(v => v.options.every((o, idx) => o === chosen[idx]));
+      if (match) {
+        select.value = match.id;
+        if (priceEl) priceEl.textContent = (match.price / 100).toLocaleString(undefined, { style: 'currency', currency: '{{ cart.currency.iso_code }}' });
+      }
+    }
+    form.querySelectorAll('[data-option-selector]').forEach(i => i.addEventListener('change', update));
+  })();
+</script>
+
+{% schema %}
+{ "name": "Product", "settings": [] }
+{% endschema %}

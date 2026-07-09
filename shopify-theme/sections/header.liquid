@@ -1,0 +1,175 @@
+{%- comment -%}
+  Header = announcement marquee + glassy pill navbar.
+  Ported 1:1 from src/components/layout/navbar.tsx.
+  Scroll behaviour, mobile menu and theme toggle are wired up in assets/global.js.
+{%- endcomment -%}
+
+<header
+  id="site-header"
+  data-site-header
+  class="fixed left-0 right-0 z-50 w-full transition-transform duration-500 translate-y-0"
+>
+  {%- comment -%} Announcement marquee {%- endcomment -%}
+  <div class="flex h-10 w-full items-center overflow-hidden border-b border-[var(--color-border-inverse)] bg-[var(--color-marquee-bg)]">
+    <div class="marquee-track flex min-w-max">
+      {%- for i in (1..2) -%}
+        <div class="flex shrink-0 items-center">
+          {%- assign announcements = settings.announcement_text | default: 'Free Worldwide Shipping • 90 Day Free Trial • Spring Sale - Up To 50% Off • Free Worldwide Shipping • 90 Day Free Trial • Spring Sale - Up To 50% Off •' | split: '•' -%}
+          {%- for text in announcements -%}
+            {%- assign trimmed = text | strip -%}
+            {%- if trimmed != blank -%}
+              <span class="px-6 text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--color-marquee-fg)]">{{ trimmed }}</span>
+              <span class="px-6 text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--color-marquee-fg)]">&bull;</span>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+
+  <div class="w-full px-4 pt-4 sm:px-6 lg:px-8">
+    <div
+      data-nav-pill
+      class="mx-auto flex w-full max-w-7xl items-center justify-between rounded-full border border-transparent bg-transparent px-5 py-3 transition-all duration-500"
+    >
+      {%- comment -%} Logo {%- endcomment -%}
+      <a href="{{ routes.root_url }}" class="font-display text-2xl tracking-[-0.04em] text-[var(--color-ink)]">
+        {{ shop.name }}
+      </a>
+
+      {%- comment -%} Desktop nav — driven by the Shopify menu chosen in the theme editor. {%- endcomment -%}
+      {%- assign main_menu = linklists[section.settings.menu] -%}
+      <nav class="hidden items-center gap-8 lg:flex">
+        {%- for link in main_menu.links -%}
+          <div class="group relative">
+            <a href="{{ link.url }}" class="flex items-center gap-1 py-2 text-sm font-medium text-[var(--color-muted)] transition-colors hover:text-[var(--color-ink)]">
+              {{ link.title }}{% if link.links.size > 0 %} {% render 'icon', name: 'chevron-down', size: 14 %}{% endif %}
+            </a>
+            {%- if link.links.size > 0 -%}
+              <div class="invisible absolute left-0 top-full z-50 pt-2 opacity-0 transition-all group-hover:visible group-hover:opacity-100">
+                <div class="flex w-56 flex-col rounded-xl border border-[var(--color-border-strong)] bg-[var(--color-surface-strong)] p-2 shadow-xl backdrop-blur-xl">
+                  {%- for child in link.links -%}
+                    <div class="group/sub relative">
+                      <a href="{{ child.url }}" class="flex items-center justify-between rounded-lg px-4 py-2 text-sm font-medium text-[var(--color-muted)] hover:bg-[var(--color-overlay-soft)] hover:text-[var(--color-ink)]">
+                        {{ child.title }}{% if child.links.size > 0 %} {% render 'icon', name: 'chevron-right', size: 14 %}{% endif %}
+                      </a>
+                      {%- if child.links.size > 0 -%}
+                        <div class="invisible absolute left-full top-0 pl-2 opacity-0 transition-all group-hover/sub:visible group-hover/sub:opacity-100">
+                          <div class="flex w-48 flex-col rounded-xl border border-[var(--color-border-strong)] bg-[var(--color-surface-strong)] p-2 shadow-xl backdrop-blur-xl">
+                            {%- for subchild in child.links -%}
+                              <a href="{{ subchild.url }}" class="block rounded-lg px-4 py-2 text-sm font-medium text-[var(--color-muted)] hover:bg-[var(--color-overlay-soft)] hover:text-[var(--color-ink)]">{{ subchild.title }}</a>
+                            {%- endfor -%}
+                          </div>
+                        </div>
+                      {%- endif -%}
+                    </div>
+                  {%- endfor -%}
+                </div>
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </nav>
+
+      {%- comment -%} Right-side icons (desktop) {%- endcomment -%}
+      <div class="hidden items-center gap-6 lg:flex">
+        <div class="flex items-center gap-1.5 text-sm font-medium text-[var(--color-ink)]">
+          <span>{{ shop.currency }} {{ cart.currency.symbol }}</span>
+        </div>
+
+        <div class="flex items-center gap-5 border-l border-[var(--color-muted)]/20 pl-6">
+          <button type="button" data-open-search aria-label="Search" class="text-[var(--color-ink)] transition-colors hover:text-[var(--color-muted)]">
+            {% render 'icon', name: 'search', size: 20 %}
+          </button>
+
+          {%- comment -%} Account + theme dropdown {%- endcomment -%}
+          <div class="group relative">
+            <button aria-label="User account" class="flex items-center gap-1 text-[var(--color-ink)] transition-colors hover:text-[var(--color-muted)]">
+              {% render 'icon', name: 'user', size: 20 %}
+              {% render 'icon', name: 'chevron-down', size: 14 %}
+            </button>
+            <div class="invisible absolute right-0 top-full z-50 pt-4 opacity-0 transition-all group-hover:visible group-hover:opacity-100">
+              <div class="w-56 rounded-2xl border border-[var(--color-border-strong)] bg-[var(--color-surface-strong)] p-2 shadow-2xl backdrop-blur-xl">
+                {%- if customer -%}
+                  <div class="px-3 py-2 text-sm text-[var(--color-ink)]">
+                    <p class="font-semibold">{{ customer.name | default: 'User' }}</p>
+                    <p class="truncate text-xs text-[var(--color-muted)]">{{ customer.email }}</p>
+                  </div>
+                  <div class="my-1 h-px w-full bg-[var(--color-border-soft)]"></div>
+                  <a href="{{ routes.account_url }}" class="flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left text-sm text-[var(--color-ink)] transition-colors hover:bg-[var(--color-overlay-soft)]">My Profile</a>
+                  <a href="{{ routes.account_logout_url }}" class="flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left text-sm text-[var(--color-ink)] transition-colors hover:bg-[var(--color-overlay-soft)]">Logout</a>
+                {%- else -%}
+                  <a href="{{ routes.account_login_url }}" class="flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left text-sm text-[var(--color-ink)] transition-colors hover:bg-[var(--color-overlay-soft)]">Log In</a>
+                  <a href="{{ routes.account_register_url }}" class="flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left text-sm text-[var(--color-ink)] transition-colors hover:bg-[var(--color-overlay-soft)]">Sign Up</a>
+                {%- endif -%}
+                <div class="my-1 h-px w-full bg-[var(--color-border-soft)]"></div>
+                <p class="px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--color-muted)]">Theme</p>
+                <button type="button" data-set-theme="light" class="flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left text-sm text-[var(--color-muted)] transition-colors hover:bg-[var(--color-overlay-soft)]">
+                  <span>Light</span>
+                </button>
+                <button type="button" data-set-theme="dark" class="flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left text-sm text-[var(--color-muted)] transition-colors hover:bg-[var(--color-overlay-soft)]">
+                  <span>Dark</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <button type="button" data-open-cart aria-label="Shopping bag" class="group relative text-[var(--color-ink)] transition-colors hover:text-[var(--color-muted)]">
+            {% render 'icon', name: 'shopping-bag', size: 20 %}
+            <span
+              data-cart-count
+              class="absolute -right-1.5 -top-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-[var(--color-ink)] text-[10px] font-bold text-[var(--color-paper)] {% if cart.item_count == 0 %}hidden{% endif %}"
+            >{{ cart.item_count }}</span>
+          </button>
+        </div>
+      </div>
+
+      {%- comment -%} Mobile controls {%- endcomment -%}
+      <div class="flex items-center gap-2 lg:hidden">
+        <button type="button" data-theme-toggle aria-label="Toggle theme" class="inline-flex rounded-full border border-[var(--color-border-soft)] bg-[var(--color-surface-soft)] p-2 text-[var(--color-ink)] backdrop-blur">
+          {% render 'icon', name: 'sun', size: 18 %}
+        </button>
+        <button type="button" data-mobile-toggle aria-label="Toggle menu" class="inline-flex rounded-full border border-[var(--color-border-soft)] bg-[var(--color-surface-soft)] p-2 text-[var(--color-ink)] backdrop-blur">
+          {% render 'icon', name: 'menu', size: 18 %}
+        </button>
+      </div>
+    </div>
+
+    {%- comment -%} Mobile menu panel {%- endcomment -%}
+    <div data-mobile-menu class="mx-auto mt-3 hidden max-w-7xl rounded-[28px] border border-[var(--color-border-soft)] bg-[var(--color-surface-strong)] p-5 shadow-[0_24px_60px_var(--color-card-shadow-strong)] backdrop-blur-2xl lg:hidden">
+      <nav class="flex flex-col gap-2">
+        {%- for link in main_menu.links -%}
+          <a href="{{ link.url }}" class="rounded-2xl px-4 py-3 text-sm text-[var(--color-ink)] transition-colors hover:bg-[var(--color-surface)]">{{ link.title }}</a>
+          {%- for child in link.links -%}
+            <a href="{{ child.url }}" class="rounded-2xl px-7 py-2.5 text-sm text-[var(--color-muted)] transition-colors hover:bg-[var(--color-surface)] hover:text-[var(--color-ink)]">{{ child.title }}</a>
+          {%- endfor -%}
+        {%- endfor -%}
+      </nav>
+      <div class="mt-4">
+        <a href="/pages/contact" class="flex w-full items-center justify-center rounded-full bg-[var(--color-ink)] px-5 py-3 text-sm font-semibold text-[var(--color-paper)] transition hover:bg-[var(--color-ink-soft)]">Book a demo</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Navigation menu",
+      "default": "main-menu",
+      "info": "Edit links in Online Store → Navigation. Supports up to 3 levels of dropdowns."
+    },
+    {
+      "type": "text",
+      "id": "announcement_text",
+      "label": "Announcement marquee text",
+      "info": "Separate phrases with the • character.",
+      "default": "Free Worldwide Shipping • 90 Day Free Trial • Spring Sale - Up To 50% Off •"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,72 @@
+{%- comment -%}
+  Reusable purchase module: price + variant options + quantity + add-to-cart.
+  Used inside the custom product landing templates. Submitting opens the cart drawer
+  (intercepted in global.js). Param: anchor_id (optional element id for in-page links).
+{%- endcomment -%}
+<div id="{{ anchor_id | default: 'buy' }}" data-buy class="rounded-[32px] border border-[var(--color-border-soft)] bg-[var(--color-surface-soft)] p-8 shadow-[0_20px_60px_var(--color-card-shadow)]">
+  <div class="flex flex-wrap items-end justify-between gap-4">
+    <div>
+      <p class="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--color-muted)]">{{ heading | default: 'Order now' }}</p>
+      <p class="mt-2 font-display text-4xl tracking-[-0.03em] text-[var(--color-ink)]" data-buy-price>{{ product.selected_or_first_available_variant.price | money }}</p>
+    </div>
+    {%- if product.compare_at_price > product.price -%}
+      <p class="text-sm text-[var(--color-muted)] line-through">{{ product.compare_at_price | money }}</p>
+    {%- endif -%}
+  </div>
+
+  <form method="post" action="/cart/add" class="mt-6 flex flex-col gap-5">
+    <input type="hidden" name="form_type" value="product">
+
+    {%- unless product.has_only_default_variant -%}
+      {%- for option in product.options_with_values -%}
+        <div>
+          <label class="text-sm font-semibold text-[var(--color-ink)]">{{ option.name }}</label>
+          <div class="mt-2 flex flex-wrap gap-2">
+            {%- for value in option.values -%}
+              <label class="cursor-pointer rounded-full border border-[var(--color-border-strong)] px-4 py-2 text-sm text-[var(--color-ink)] transition hover:bg-[var(--color-overlay-soft)] has-[:checked]:bg-[var(--color-ink)] has-[:checked]:text-[var(--color-paper)]">
+                <input type="radio" name="option-{{ option.position }}" value="{{ value | escape }}" class="sr-only" {% if option.selected_value == value %}checked{% endif %} data-buy-option>
+                {{ value }}
+              </label>
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endfor -%}
+    {%- endunless -%}
+
+    <select name="id" class="sr-only" data-buy-variant>
+      {%- for variant in product.variants -%}
+        <option value="{{ variant.id }}" {% unless variant.available %}disabled{% endunless %} {% if variant == product.selected_or_first_available_variant %}selected{% endif %}>{{ variant.title }}</option>
+      {%- endfor -%}
+    </select>
+
+    <div class="flex items-center gap-4">
+      <div class="flex items-center gap-3 rounded-full border border-[var(--color-border-strong)] px-4 py-2.5">
+        <button type="button" aria-label="Decrease" onclick="var q=this.parentNode.querySelector('input');q.value=Math.max(1,parseInt(q.value)-1)">{% render 'icon', name: 'minus', size: 16 %}</button>
+        <input type="number" name="quantity" value="1" min="1" class="w-10 bg-transparent text-center text-sm text-[var(--color-ink)] outline-none">
+        <button type="button" aria-label="Increase" onclick="var q=this.parentNode.querySelector('input');q.value=parseInt(q.value)+1">{% render 'icon', name: 'plus', size: 16 %}</button>
+      </div>
+      <button type="submit" class="flex flex-1 items-center justify-center rounded-full bg-[var(--color-brand-primary)] px-8 py-4 text-sm font-semibold text-[var(--color-paper)] shadow-[0_18px_40px_var(--color-brand-glow)] transition hover:bg-[var(--color-brand-secondary)] disabled:opacity-50" {% unless product.available %}disabled{% endunless %}>
+        {%- if product.available -%}{{ button_label | default: 'Add to cart' }}{%- else -%}Sold out{%- endif -%}
+      </button>
+    </div>
+  </form>
+
+  <script>
+    (function () {
+      var root = document.currentScript.closest('[data-buy]');
+      if (!root) return;
+      var select = root.querySelector('[data-buy-variant]');
+      var priceEl = root.querySelector('[data-buy-price]');
+      var variants = {{ product.variants | json }};
+      function update() {
+        var chosen = Array.prototype.map.call(root.querySelectorAll('[data-buy-option]:checked'), function (i) { return i.value; });
+        var match = variants.find(function (v) { return v.options.every(function (o, idx) { return o === chosen[idx]; }); });
+        if (match) {
+          select.value = match.id;
+          if (priceEl) priceEl.textContent = (match.price / 100).toLocaleString(undefined, { style: 'currency', currency: '{{ cart.currency.iso_code }}' });
+        }
+      }
+      root.querySelectorAll('[data-buy-option]').forEach(function (i) { i.addEventListener('change', update); });
+    })();
+  </script>
+</div>

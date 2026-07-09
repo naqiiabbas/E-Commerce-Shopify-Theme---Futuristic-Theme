@@ -1,0 +1,114 @@
+{%- comment -%}
+  At-Home Dry Sauna landing page — ported 1:1 from src/app/products/dry-sauna/page.tsx
+  Custom PRODUCT template: assign to the product with handle "dry-sauna".
+  Note: the original top hero used a 54MB video; here it shows the matching still
+  (poster-sauna.webp). Upload sauna/hero_vid.mp4 to Files and swap if you want motion.
+{%- endcomment -%}
+{% render 'page-hero',
+  eyebrow: 'Recovery Ecosystem',
+  heading: 'An at-home dry sauna designed to bring heat, calm, and restoration into the Somara Labs system.',
+  description: 'Inspired by the premium at-home sauna category, this product extends the Somara Labs ritual beyond red light into detox, relaxation, circulation, and immersive recovery.',
+  primary_label: 'Shop the Sauna',
+  primary_link: '#buy'
+%}
+
+{%- comment -%} Intro: media collage + the sauna {%- endcomment -%}
+<section class="px-6 pb-10 lg:px-8">
+  <div class="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[1.05fr_0.95fr]">
+    <div class="reveal overflow-hidden rounded-[36px] border border-[var(--color-border-soft)] bg-[var(--color-panel-dark)] shadow-[0_28px_90px_var(--color-card-shadow-strong)]">
+      <div class="grid gap-4 p-4">
+        <img src="{{ 'poster-sauna.webp' | asset_url }}" alt="At-home dry sauna" class="aspect-[16/11] w-full rounded-[28px] object-cover">
+        <div class="grid grid-cols-3 gap-4">
+          <img src="{{ 'sauna-9.webp' | asset_url }}" alt="Sauna detail one" class="aspect-[4/5] w-full rounded-[22px] object-cover">
+          <img src="{{ 'sauna-10.webp' | asset_url }}" alt="Sauna detail two" class="aspect-[4/5] w-full rounded-[22px] object-cover">
+          <img src="{{ 'sauna-11.webp' | asset_url }}" alt="Sauna detail three" class="aspect-[4/5] w-full rounded-[22px] object-cover">
+        </div>
+      </div>
+    </div>
+    <div class="reveal rounded-[36px] border border-[var(--color-border-soft)] bg-[var(--color-surface-soft)] p-8 shadow-[0_20px_60px_var(--color-card-shadow)]" style="--reveal-delay:0.08s">
+      <p class="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--color-muted)]">The Sauna</p>
+      <h2 class="mt-4 font-display text-5xl leading-[0.95] tracking-[-0.04em] text-[var(--color-ink)]">Heat therapy reworked for a more beautiful, home-ready recovery environment.</h2>
+      <p class="mt-5 text-base leading-8 text-[var(--color-muted)]">This page takes inspiration from premium sauna product storytelling: rich media, clear feature framing, and a purchase journey that feels considered. Within Somara Labs, the sauna plays a supporting but elevated role beside red light therapy.</p>
+      <div class="mt-8 grid gap-4">
+        {%- assign features = 'Full-spectrum heat environment for deep restorative sessions;Designed for detox, relaxation, circulation, and recovery rituals;Compact architectural footprint built for premium home placement;A supporting product inside the wider Somara Labs recovery ecosystem' | split: ';' -%}
+        {%- for item in features -%}
+          <div class="rounded-[24px] border border-[var(--color-border-soft)] bg-[var(--color-surface)] px-5 py-4 text-sm leading-7 text-[var(--color-ink)]">{{ item }}</div>
+        {%- endfor -%}
+      </div>
+      <div class="mt-8 flex gap-3">
+        <a href="/pages/contact" class="inline-flex flex-1 items-center justify-center rounded-full bg-[var(--color-brand-primary)] px-5 py-3 text-sm font-semibold text-[var(--color-paper)] shadow-[0_18px_40px_var(--color-brand-glow)] transition hover:bg-[var(--color-brand-secondary)]">Speak to a Specialist</a>
+        <a href="{{ routes.all_products_collection_url }}" class="inline-flex flex-1 items-center justify-center rounded-full border border-[var(--color-border-soft)] bg-[var(--color-surface)] px-5 py-3 text-sm font-semibold text-[var(--color-ink)] backdrop-blur-xl transition hover:bg-[var(--color-surface-strong)]">Compare Products</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{%- comment -%} Purchase module {%- endcomment -%}
+<section class="px-6 py-10 lg:px-8">
+  <div class="reveal mx-auto max-w-3xl">
+    {% render 'product-buy', heading: 'Order your sauna', button_label: 'Add to cart' %}
+  </div>
+</section>
+
+{%- comment -%} Delivery options {%- endcomment -%}
+<section class="px-6 py-12 lg:px-8 lg:py-16">
+  <div class="mx-auto max-w-7xl">
+    <div class="reveal max-w-3xl">
+      <p class="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--color-muted)]">Delivery Experience</p>
+      <h2 class="mt-4 font-display text-5xl tracking-[-0.04em] text-[var(--color-ink)]">A premium setup journey should feel as refined as the product itself.</h2>
+    </div>
+    <div class="mt-12 grid gap-6 lg:grid-cols-3">
+      {%- assign opt_titles = 'Standard Delivery|Room of Choice|White Glove Setup' | split: '|' -%}
+      {%- assign opt_descs = 'A streamlined drop-off option for customers who want the most direct route to setup.|A guided in-home placement experience for customers who want the unit brought directly to its final room.|Our highest-touch experience with in-home delivery, placement, and full assembly support.' | split: '|' -%}
+      {%- assign opt_details = 'Best for straightforward access and self-managed installation.|Ideal for apartments, stairs, and more complex entry paths.|For buyers who want the sauna integrated with as little friction as possible.' | split: '|' -%}
+      {%- for title in opt_titles -%}
+        <div class="reveal rounded-[30px] border border-[var(--color-border-soft)] bg-[var(--color-surface-soft)] p-7 shadow-[0_18px_50px_var(--color-card-shadow)]" style="--reveal-delay:{{ forloop.index0 | times: 0.08 }}s">
+          <p class="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--color-muted)]">Option {{ forloop.index }}</p>
+          <h3 class="mt-4 font-display text-3xl tracking-[-0.03em] text-[var(--color-ink)]">{{ title }}</h3>
+          <p class="mt-4 text-sm leading-7 text-[var(--color-muted)]">{{ opt_descs[forloop.index0] }}</p>
+          <p class="mt-5 rounded-[20px] bg-[var(--color-surface)] px-4 py-3 text-sm leading-7 text-[var(--color-ink)]">{{ opt_details[forloop.index0] }}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{%- comment -%} Why it belongs (video + benefits) {%- endcomment -%}
+<section class="px-6 py-10 lg:px-8 lg:py-14">
+  <div class="mx-auto max-w-7xl overflow-hidden rounded-[36px] border border-[var(--color-border-soft)] bg-[var(--color-panel-dark)] shadow-[0_28px_90px_var(--color-card-shadow-strong)]">
+    <div class="grid gap-0 lg:grid-cols-[0.92fr_1.08fr]">
+      <div class="reveal relative min-h-[420px] lg:min-h-full">
+        <video autoplay muted loop playsinline class="absolute inset-0 h-full w-full object-cover" src="{{ 'sauna-feature.mp4' | asset_url }}"></video>
+      </div>
+      <div class="reveal flex flex-col justify-center p-8 lg:p-12" style="--reveal-delay:0.08s">
+        <p class="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--color-redlight-text)]">Why it belongs</p>
+        <h2 class="mt-4 font-display text-5xl leading-[0.96] tracking-[-0.04em] text-[var(--color-redlight-text)]">A softer ritual, built to support restoration rather than compete with the flagship.</h2>
+        <p class="mt-5 text-base leading-8 text-[var(--color-redlight-line-soft)]">The sauna gives Somara Labs a second recovery language: slower, warmer, more atmospheric. It complements the precision of red light by offering full-body heat, deeper unwinding, and a more ritualized evening or post-training experience.</p>
+        <div class="mt-8 grid gap-3">
+          {%- assign sbenefits = 'Supports detox and daily decompression|Builds a more complete recovery ritual around your core products|Pairs naturally with light therapy and compression for full-system restoration|Elevates the home environment into a premium wellness space' | split: '|' -%}
+          {%- for item in sbenefits -%}
+            <div class="rounded-[20px] border border-[var(--color-border-inverse)] bg-[var(--color-surface-muted)] px-4 py-3 text-sm leading-7 text-[var(--color-redlight-text)]">{{ item }}</div>
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{%- comment -%} Gallery {%- endcomment -%}
+<section class="px-6 py-14 lg:px-8 lg:py-[4.5rem]">
+  <div class="mx-auto max-w-7xl">
+    <div class="reveal max-w-3xl">
+      <p class="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--color-muted)]">Gallery</p>
+      <h2 class="mt-4 font-display text-5xl tracking-[-0.04em] text-[var(--color-ink)]">The sauna through the lens of material, atmosphere, and ritual.</h2>
+    </div>
+    <div class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {%- assign gallery = 'sauna-2.webp|sauna-3.webp|sauna-4.webp|sauna-5.webp|sauna-7.webp|sauna-8.webp' | split: '|' -%}
+      {%- for image in gallery -%}
+        <div class="reveal overflow-hidden rounded-[28px] border border-[var(--color-border-soft)] bg-[var(--color-surface-soft)] shadow-[0_18px_50px_var(--color-card-shadow)]" style="--reveal-delay:{{ forloop.index0 | times: 0.05 }}s">
+          <img src="{{ image | asset_url }}" alt="Somara Labs sauna gallery {{ forloop.index }}" class="aspect-[4/5] w-full object-cover">
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>

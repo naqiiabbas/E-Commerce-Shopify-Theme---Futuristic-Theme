@@ -1,0 +1,27 @@
+{%- comment -%} Shipping & Returns — designed to match the theme. Assign to page handle "shipping". {%- endcomment -%}
+{% render 'page-hero',
+  eyebrow: 'Shipping & Returns',
+  heading: 'Free worldwide shipping and a 30-day risk-free home trial.',
+  description: 'Every Somara Labs recovery system ships globally and is backed by a 30-day home trial, so you can build the ritual before you commit.'
+%}
+
+<section class="px-6 pb-16 lg:px-8">
+  <div class="mx-auto grid max-w-7xl gap-6 sm:grid-cols-2">
+    {%- assign s_titles = 'Free worldwide shipping|30-day home trial|Easy returns|Warranty & support' | split: '|' -%}
+    {%- assign s_descs = 'We ship globally at no cost to you. Delivery times and any duties are calculated transparently at checkout based on your location.|Try your system at home for 30 days. If it is not part of your routine, send it back for a full refund — we even cover return shipping.|Start a return from your account or by contacting support. Once your item is on its way back, your refund is issued to the original payment method.|Each system is covered by a manufacturer warranty. Our team helps with setup, placement, and troubleshooting so you get the most from your recovery space.' | split: '|' -%}
+    {%- for title in s_titles -%}
+      <div class="reveal rounded-[30px] border border-[var(--color-border-soft)] bg-[var(--color-surface-soft)] p-8 shadow-[0_18px_50px_var(--color-card-shadow)]" style="--reveal-delay:{{ forloop.index0 | times: 0.07 }}s">
+        <h3 class="font-display text-3xl tracking-[-0.03em] text-[var(--color-ink)]">{{ title }}</h3>
+        <p class="mt-4 text-sm leading-7 text-[var(--color-muted)]">{{ s_descs[forloop.index0] }}</p>
+      </div>
+    {%- endfor -%}
+  </div>
+
+  {%- if page.content != blank -%}
+    <article class="reveal mx-auto mt-10 max-w-3xl rounded-[32px] border border-[var(--color-border-soft)] bg-[var(--color-surface-soft)] p-8 text-sm leading-8 text-[var(--color-muted)] shadow-[0_20px_60px_var(--color-card-shadow)]">{{ page.content }}</article>
+  {%- endif -%}
+
+  <div class="reveal mx-auto mt-10 flex max-w-7xl justify-center">
+    <a href="/pages/contact" class="inline-flex items-center justify-center rounded-full bg-[var(--color-brand-primary)] px-6 py-3 text-sm font-semibold text-[var(--color-paper)] shadow-[0_18px_40px_var(--color-brand-glow)] transition hover:bg-[var(--color-brand-secondary)]">Questions? Contact support</a>
+  </div>
+</section>

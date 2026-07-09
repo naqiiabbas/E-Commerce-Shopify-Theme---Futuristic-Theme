@@ -1,0 +1,23 @@
+{%- comment -%} Search results. {%- endcomment -%}
+<section class="mx-auto max-w-7xl px-6 pb-16 pt-28 lg:px-8 lg:pt-36">
+  <h1 class="font-display text-4xl tracking-[-0.03em] text-[var(--color-ink)] sm:text-5xl">Search</h1>
+  <form action="{{ routes.search_url }}" method="get" class="mt-6 flex max-w-xl items-center gap-3 border-b border-[var(--color-border-strong)] pb-3">
+    <span class="text-[var(--color-muted)]">{% render 'icon', name: 'search', size: 20 %}</span>
+    <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="Search products, articles..." class="w-full bg-transparent text-lg text-[var(--color-ink)] outline-none placeholder:text-[var(--color-muted)]">
+  </form>
+
+  {%- if search.performed -%}
+    <p class="mt-6 text-sm text-[var(--color-muted)]">{{ search.results_count }} results for &ldquo;{{ search.terms }}&rdquo;</p>
+    <div class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {%- for item in search.results -%}
+        {%- if item.object_type == 'product' -%}
+          {% render 'product-card', card_product: item %}
+        {%- else -%}
+          <a href="{{ item.url }}" class="rounded-2xl border border-[var(--color-border-soft)] bg-[var(--color-surface)] p-6">
+            <p class="font-display text-xl text-[var(--color-ink)]">{{ item.title }}</p>
+          </a>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</section>

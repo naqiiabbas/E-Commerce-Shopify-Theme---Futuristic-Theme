@@ -1,0 +1,27 @@
+{%- comment -%} Blog listing, styled to match src/app/blog/page.tsx (PageHero + BlogCard). {%- endcomment -%}
+{% render 'page-hero',
+  eyebrow: 'Journal',
+  heading: 'An editorial-ready blog structure built for later CMS migration.',
+  description: 'The entries below are polished placeholders so the information architecture is complete even before the real content team starts publishing.'
+%}
+
+<section class="px-6 pb-16 lg:px-8">
+  <div class="mx-auto grid max-w-7xl gap-6 lg:grid-cols-3">
+    {%- for article in blog.articles -%}
+      <a href="{{ article.url }}" class="reveal group block rounded-[28px] border border-[var(--color-border-soft)] bg-[var(--color-surface-soft)] p-6 shadow-[0_16px_44px_var(--color-card-shadow)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_24px_54px_var(--color-card-shadow-strong)]" style="--reveal-delay:{{ forloop.index0 | times: 0.07 }}s">
+        <div class="flex items-center justify-between text-xs uppercase tracking-[0.2em] text-[var(--color-muted)]">
+          <span>{{ article.tags.first | default: 'Journal' }}</span>
+          <span>{{ article.metafields.blog.read_time | default: '5 min read' }}</span>
+        </div>
+        <h3 class="mt-6 font-display text-3xl leading-[1.02] tracking-[-0.03em] text-[var(--color-ink)]">{{ article.title }}</h3>
+        <p class="mt-4 text-sm leading-7 text-[var(--color-muted)]">{{ article.excerpt_or_content | strip_html | truncatewords: 26 }}</p>
+        <div class="mt-6 flex items-center justify-between text-sm font-medium text-[var(--color-ink)]">
+          <span>{{ article.published_at | date: '%b %-d, %Y' }}</span>
+          <span class="transition-transform duration-300 group-hover:translate-x-1">Read article</span>
+        </div>
+      </a>
+    {%- else -%}
+      <p class="text-sm text-[var(--color-muted)]">No articles published yet. Add a blog called <strong>news</strong> in Shopify admin.</p>
+    {%- endfor -%}
+  </div>
+</section>

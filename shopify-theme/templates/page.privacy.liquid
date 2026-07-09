@@ -1,0 +1,18 @@
+{%- comment -%} Ported from src/app/privacy-policy/page.tsx. Assign to page handle "privacy-policy". {%- endcomment -%}
+{% render 'page-hero',
+  eyebrow: 'Privacy policy',
+  heading: 'A polished legal page that stays aligned with the rest of the brand.',
+  description: 'This placeholder copy exists to complete the information architecture and should be replaced with counsel-approved language before launch.'
+%}
+<section class="px-6 pb-16 lg:px-8">
+  <article class="reveal mx-auto max-w-4xl rounded-[32px] border border-[var(--color-border-soft)] bg-[var(--color-surface-soft)] p-8 shadow-[0_20px_60px_var(--color-card-shadow)]">
+    <div class="space-y-6 text-sm leading-8 text-[var(--color-muted)]">
+      {%- if page.content != blank -%}
+        {{ page.content }}
+      {%- else -%}
+        <p>Aurevia collects only the operational and contact data needed to support product access, inquiry handling, and service delivery. Replace this section with your exact data collection, retention, and rights language.</p>
+        <p>Include lawful basis, vendor disclosures, cross-border transfer treatment, and any healthcare-specific obligations that apply to your actual business model.</p>
+      {%- endif -%}
+    </div>
+  </article>
+</section>

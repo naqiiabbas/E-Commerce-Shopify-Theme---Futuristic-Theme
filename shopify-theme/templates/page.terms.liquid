@@ -1,0 +1,18 @@
+{%- comment -%} Ported from src/app/terms-of-service/page.tsx. Assign to page handle "terms-of-service". {%- endcomment -%}
+{% render 'page-hero',
+  eyebrow: 'Terms of service',
+  heading: 'Clean legal scaffolding for a production-shaped marketing site.',
+  description: 'This page is intentionally minimal and should be replaced with your real commercial, platform, and usage terms before launch.'
+%}
+<section class="px-6 pb-16 lg:px-8">
+  <article class="reveal mx-auto max-w-4xl rounded-[32px] border border-[var(--color-border-soft)] bg-[var(--color-surface-soft)] p-8 shadow-[0_20px_60px_var(--color-card-shadow)]">
+    <div class="space-y-6 text-sm leading-8 text-[var(--color-muted)]">
+      {%- if page.content != blank -%}
+        {{ page.content }}
+      {%- else -%}
+        <p>Define account responsibilities, acceptable use, subscription or service payment terms, ownership of materials, disclaimers, and limitation language according to your real offering.</p>
+        <p>For healthcare-adjacent businesses, make sure the final terms clearly distinguish software services from medical care where appropriate.</p>
+      {%- endif -%}
+    </div>
+  </article>
+</section>
