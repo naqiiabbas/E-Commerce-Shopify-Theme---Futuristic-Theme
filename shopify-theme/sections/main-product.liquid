@@ -1,5 +1,5 @@
 {%- comment -%} Product page. Gallery + variant picker + add-to-cart (drives the cart drawer). {%- endcomment -%}
-<section class="mx-auto max-w-7xl px-6 pb-12 pt-28 lg:px-8 lg:pt-36">
+<section id="main-product-{{ section.id }}" class="mx-auto max-w-7xl px-6 pb-12 pt-28 lg:px-8 lg:pt-36">
   <div class="grid gap-12 lg:grid-cols-2">
     {%- comment -%} Gallery {%- endcomment -%}
     <div class="flex flex-col gap-4">
@@ -68,6 +68,49 @@
           {{ product.description }}
         </div>
       {%- endif -%}
+
+      {%- comment -%} Per-variant specifications, from the variant metafield custom.specifications {%- endcomment -%}
+      {%- assign has_specs = false -%}
+      {%- for v in product.variants -%}
+        {%- if v.metafields.custom.specifications.value != blank -%}{%- assign has_specs = true -%}{%- endif -%}
+      {%- endfor -%}
+      {%- if has_specs -%}
+        <div class="mt-10 border-t border-[var(--color-border-soft)] pt-8" data-specs-root>
+          {%- for v in product.variants -%}
+            {%- assign raw = v.metafields.custom.specifications.value | strip -%}
+            <div data-specs="{{ v.id }}" class="{% if v != product.selected_or_first_available_variant %}hidden{% endif %}">
+              {%- if raw != blank -%}
+                {%- assign lines = raw | newline_to_br | split: '<br />' -%}
+                {%- assign first = lines[0] | strip -%}
+                {%- if first contains ':' -%}{%- assign spec_title = v.title -%}{%- else -%}{%- assign spec_title = first -%}{%- endif -%}
+                <p class="text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-muted)]">Specifications</p>
+                <h3 class="mt-2 font-display text-2xl tracking-[-0.02em] text-[var(--color-ink)] sm:text-3xl">{{ spec_title }}</h3>
+                <div class="relative mt-5">
+                  <div class="specs-scroll max-h-[300px] overflow-y-auto rounded-2xl border border-[var(--color-border-soft)]">
+                    <table class="w-full text-left text-sm">
+                      <tbody>
+                      {%- for line in lines -%}
+                        {%- assign s = line | strip -%}
+                        {%- if s == blank or s == spec_title -%}{%- continue -%}{%- endif -%}
+                        {%- unless s contains ':' -%}{%- continue -%}{%- endunless -%}
+                        {%- assign label = s | split: ':' | first | strip -%}
+                        {%- assign value = s | remove_first: label | remove_first: ':' | strip -%}
+                        <tr class="border-b border-[var(--color-border-soft)] odd:bg-[var(--color-surface-muted)]">
+                          <th scope="row" class="w-2/5 px-4 py-3 align-top font-medium text-[var(--color-muted)]">{{ label }}</th>
+                          <td class="px-4 py-3 text-[var(--color-ink)]">{{ value }}</td>
+                        </tr>
+                      {%- endfor -%}
+                    </tbody>
+                  </table>
+                  </div>
+                  {%- comment -%} Fade hint that there's more to scroll {%- endcomment -%}
+                  <div class="pointer-events-none absolute inset-x-0 bottom-0 h-8 rounded-b-2xl bg-gradient-to-t from-[var(--color-paper)] to-transparent"></div>
+                </div>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
     </div>
   </div>
 </section>
@@ -76,20 +119,36 @@
   // Sync the radio option selectors to the hidden variant <select> so the
   // correct variant id is submitted, and update the displayed price.
   (function () {
-    const form = document.currentScript.closest('section');
-    if (!form) return;
-    const select = form.querySelector('[data-variant-select]');
-    const priceEl = form.querySelector('[data-product-price]');
-    const variants = {{ product.variants | json }};
+    const root = document.getElementById('main-product-{{ section.id }}') || document;
+    const select = root.querySelector('[data-variant-select]');
+    const priceEl = root.querySelector('[data-product-price]');
+    const submit = root.querySelector('[type="submit"]');
+    // Match on option1/2/3 — always present in the serialised variant data.
+    const variants = [
+      {%- for v in product.variants -%}
+      { id: {{ v.id }}, o: [{{ v.option1 | json }}, {{ v.option2 | json }}, {{ v.option3 | json }}], price: {{ v.price | money | json }}, available: {{ v.available }} }{% unless forloop.last %},{% endunless %}
+      {%- endfor -%}
+    ];
     function update() {
-      const chosen = Array.from(form.querySelectorAll('[data-option-selector]:checked')).map(i => i.value);
-      const match = variants.find(v => v.options.every((o, idx) => o === chosen[idx]));
-      if (match) {
-        select.value = match.id;
-        if (priceEl) priceEl.textContent = (match.price / 100).toLocaleString(undefined, { style: 'currency', currency: '{{ cart.currency.iso_code }}' });
+      const chosen = Array.from(root.querySelectorAll('[data-option-selector]:checked')).map(i => i.value);
+      const match = variants.find(v => chosen.every((c, idx) => v.o[idx] === c));
+      if (!match) return;
+      if (select) select.value = match.id;
+      if (priceEl) priceEl.innerHTML = match.price;
+      if (submit) {
+        submit.disabled = !match.available;
+        submit.textContent = match.available ? 'Add to cart' : 'Sold out';
+      }
+      // Swap the per-variant specifications table.
+      const specsRoot = root.querySelector('[data-specs-root]');
+      if (specsRoot) {
+        specsRoot.querySelectorAll('[data-specs]').forEach(el => {
+          el.classList.toggle('hidden', el.getAttribute('data-specs') !== String(match.id));
+        });
       }
     }
-    form.querySelectorAll('[data-option-selector]').forEach(i => i.addEventListener('change', update));
+    root.querySelectorAll('[data-option-selector]').forEach(i => i.addEventListener('change', update));
+    update();
   })();
 </script>
 

@@ -11,8 +11,9 @@
   {%- when 'lavender' -%}{%- assign accent_grad = 'from-[var(--color-accent-lavender)]/25 to-white' -%}
 {%- endcase -%}
 
-<article class="grid items-center gap-10 rounded-[36px] border border-[var(--color-border-soft)] bg-[var(--color-surface)] p-8 shadow-[0_20px_80px_var(--color-card-shadow)] backdrop-blur-xl lg:grid-cols-2 lg:p-12{% if reverse %} lg:[&>*:first-child]:order-2{% endif %}" {{ block.shopify_attributes }}>
-  <div>
+<article class="grid items-stretch gap-10 rounded-[36px] border border-[var(--color-border-soft)] bg-[var(--color-surface)] p-8 shadow-[0_20px_80px_var(--color-card-shadow)] backdrop-blur-xl lg:grid-cols-2 lg:p-12{% if reverse %} lg:[&>*:first-child]:order-2{% endif %}" {{ block.shopify_attributes }}>
+  {%- comment -%} Text column — centered vertically alongside the media {%- endcomment -%}
+  <div class="flex flex-col justify-center">
     <p class="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--color-muted)]">{{ block.settings.eyebrow }}</p>
     <h3 class="mt-4 font-display text-4xl leading-[1] tracking-[-0.03em] text-[var(--color-ink)]">{{ block.settings.title }}</h3>
     <p class="mt-5 text-base leading-8 text-[var(--color-muted)]">{{ block.settings.description }}</p>
@@ -44,12 +45,12 @@
   {%- endif -%}
   {%- if block.settings.poster_key != blank -%}{%- assign psrc = block.settings.poster_key | asset_url -%}{%- else -%}{%- assign psrc = block.settings.poster_url -%}{%- endif -%}
   {%- if block.settings.image_key != blank -%}{%- assign isrc = block.settings.image_key | asset_url -%}{%- else -%}{%- assign isrc = block.settings.image_url -%}{%- endif -%}
-  <div class="relative min-h-[360px] overflow-hidden rounded-[30px] border border-[var(--color-border-strong)] bg-gradient-to-br {{ accent_grad }} p-6">
+  <div class="relative flex min-h-[360px] flex-col overflow-hidden rounded-[30px] border border-[var(--color-border-strong)] bg-gradient-to-br {{ accent_grad }} p-6">
     <div class="ambient-orb absolute right-0 top-0 h-32 w-32 bg-[var(--color-surface-strong)]"></div>
     {%- if vsrc != blank -%}
-      <video src="{{ vsrc }}" autoplay loop muted playsinline {% if psrc != blank %}poster="{{ psrc }}"{% endif %} class="relative h-full w-full rounded-[28px] border border-[var(--color-border-strong)] object-cover shadow-[0_20px_50px_var(--color-card-shadow)] backdrop-blur-xl"></video>
+      <video src="{{ vsrc }}" autoplay loop muted playsinline {% if psrc != blank %}poster="{{ psrc }}"{% endif %} class="relative m-auto h-full min-h-0 w-full flex-1 rounded-[28px] border border-[var(--color-border-strong)] object-cover shadow-[0_20px_50px_var(--color-card-shadow)] backdrop-blur-xl"></video>
     {%- elsif isrc != blank -%}
-      <img src="{{ isrc }}" alt="{{ block.settings.title | escape }}" class="relative h-full w-full rounded-[28px] border border-[var(--color-border-strong)] object-cover shadow-[0_20px_50px_var(--color-card-shadow)] backdrop-blur-xl">
+      <img src="{{ isrc }}" alt="{{ block.settings.title | escape }}" class="relative m-auto h-full min-h-0 w-full flex-1 rounded-[28px] border border-[var(--color-border-strong)] object-cover shadow-[0_20px_50px_var(--color-card-shadow)] backdrop-blur-xl">
     {%- endif -%}
   </div>
 </article>

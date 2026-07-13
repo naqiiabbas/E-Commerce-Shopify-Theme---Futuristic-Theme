@@ -196,6 +196,47 @@ button:disabled {
   scrollbar-width: none;
 }
 
+/* Thin themed scrollbar for the specs table container. */
+.specs-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border-strong) transparent;
+}
+.specs-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+.specs-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.specs-scroll::-webkit-scrollbar-thumb {
+  background: var(--color-border-strong);
+  border-radius: 9999px;
+}
+
+/* Product benefit cards — reveal bullet points on hover; always shown on touch. */
+.benefit-points {
+  max-height: 0;
+  opacity: 0;
+  margin-top: 0;
+  overflow: hidden;
+  transition:
+    max-height 400ms ease,
+    opacity 400ms ease,
+    margin-top 400ms ease;
+}
+.benefit-card:hover .benefit-points,
+.benefit-card:focus-within .benefit-points {
+  max-height: 240px;
+  opacity: 1;
+  margin-top: 0.75rem;
+}
+@media (hover: none) {
+  .benefit-points {
+    max-height: 240px;
+    opacity: 1;
+    margin-top: 0.75rem;
+  }
+}
+
 /* Custom cursor — dot + trailing ring (replaces framer-motion CustomCursor). */
 .custom-cursor {
   transition: opacity 300ms ease;

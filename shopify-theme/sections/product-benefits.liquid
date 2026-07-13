@@ -1,0 +1,82 @@
+{%- comment -%}
+  Product benefits bar — a row of cards that reveal bullet points on hover
+  (points always visible on touch devices). Editable via the theme editor.
+  Added to the product template below the main product section.
+{%- endcomment -%}
+<section class="mx-auto max-w-7xl px-6 pb-16 pt-4 lg:px-8">
+  {%- if section.settings.heading != blank -%}
+    <h2 class="reveal mb-10 text-center font-display text-3xl font-semibold tracking-[-0.02em] text-white/70 sm:text-4xl">{{ section.settings.heading }}</h2>
+  {%- endif -%}
+
+  <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-5">
+    {%- for block in section.blocks -%}
+      <div class="benefit-card group relative aspect-[4/5] overflow-hidden rounded-2xl border border-[var(--color-border-soft)] shadow-[0_12px_42px_var(--color-card-shadow)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-brand-highlight)]" tabindex="0" {{ block.shopify_attributes }}>
+        {%- comment -%} Background priority: uploaded image > bundled theme asset > color gradient {%- endcomment -%}
+        {%- if block.settings.image != blank -%}
+          <img src="{{ block.settings.image | image_url: width: 600 }}" alt="{{ block.settings.title | escape }}" width="600" height="750" loading="lazy" class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105">
+        {%- elsif block.settings.image_key != blank -%}
+          <img src="{{ block.settings.image_key | asset_url }}" alt="{{ block.settings.title | escape }}" width="600" height="750" loading="lazy" class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105">
+        {%- else -%}
+          <div class="absolute inset-0" style="background: radial-gradient(circle at 50% 35%, {{ block.settings.color | default: '#3a3a3a' }}, #0d0f11);"></div>
+        {%- endif -%}
+
+        {%- comment -%} Dark overlay for text contrast {%- endcomment -%}
+        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-black/40"></div>
+
+        {%- comment -%} Content {%- endcomment -%}
+        <div class="absolute inset-0 flex flex-col items-center justify-center p-4 text-center text-white">
+          <h3 class="font-display text-xl leading-tight tracking-[-0.02em] sm:text-2xl">{{ block.settings.title }}</h3>
+          {%- assign points = block.settings.points | newline_to_br | split: '<br />' -%}
+          {%- if points.size > 0 -%}
+            <ul class="benefit-points flex flex-col gap-1.5">
+              {%- for point in points -%}
+                {%- assign p = point | strip -%}
+                {%- if p != blank -%}
+                  <li class="flex items-start justify-center gap-1.5 text-[11px] leading-snug text-white/90 sm:text-xs">
+                    <span class="mt-px text-[var(--color-accent-sage)]">&#10003;</span>
+                    <span>{{ p }}</span>
+                  </li>
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product benefits",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Targeted light therapy for skin, recovery, and relief" }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefit card",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Benefit" },
+        { "type": "image_picker", "id": "image", "label": "Background image (upload — overrides the bundled one)" },
+        { "type": "text", "id": "image_key", "label": "Bundled image filename (in assets/)" },
+        { "type": "color", "id": "color", "label": "Fallback color (if no image)", "default": "#3a3a3a" },
+        { "type": "textarea", "id": "points", "label": "Bullet points (one per line)" }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Product benefits",
+      "blocks": [
+        { "type": "benefit", "settings": { "title": "Skin", "color": "#8a6a4f", "points": "Supports collagen production\nImproves skin tone and texture\nReduces the look of fine lines" } },
+        { "type": "benefit", "settings": { "title": "Recovery", "color": "#7a1f1a", "points": "Supports muscle recovery\nHelps reduce muscle soreness\nSupports recovery within 48 hours" } },
+        { "type": "benefit", "settings": { "title": "Sleep", "color": "#0e1330", "points": "Supports natural melatonin\nPromotes deeper, calmer rest\nImproves overall sleep quality" } },
+        { "type": "benefit", "settings": { "title": "Mental Health", "color": "#1a3a5c", "points": "Supports a balanced mood\nEases everyday stress\nBoosts mental clarity" } },
+        { "type": "benefit", "settings": { "title": "Cellular Health", "color": "#5f2a5f", "points": "Energizes the mitochondria\nSupports cellular repair\nBoosts natural ATP production" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

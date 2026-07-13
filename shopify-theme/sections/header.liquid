@@ -73,11 +73,8 @@
 
       {%- comment -%} Right-side icons (desktop) {%- endcomment -%}
       <div class="hidden items-center gap-6 lg:flex">
-        <div class="flex items-center gap-1.5 text-sm font-medium text-[var(--color-ink)]">
-          <span>{{ shop.currency }} {{ cart.currency.symbol }}</span>
-        </div>
 
-        <div class="flex items-center gap-5 border-l border-[var(--color-muted)]/20 pl-6">
+        <div class="flex items-center gap-5">
           <button type="button" data-open-search aria-label="Search" class="text-[var(--color-ink)] transition-colors hover:text-[var(--color-muted)]">
             {% render 'icon', name: 'search', size: 20 %}
           </button>

@@ -1,6 +1,20 @@
 {
   "sections": {
-    "main": { "type": "main-product" }
+    "main": { "type": "main-product" },
+    "benefits": {
+      "type": "product-benefits",
+      "settings": {
+        "heading": "Targeted light therapy for skin, recovery, and relief"
+      },
+      "blocks": {
+        "skin": { "type": "benefit", "settings": { "title": "Skin", "image_key": "benefit-skin.webp", "color": "#8a6a4f", "points": "Supports collagen production\nImproves skin tone and texture\nReduces the look of fine lines" } },
+        "recovery": { "type": "benefit", "settings": { "title": "Recovery", "image_key": "benefit-recovery.webp", "color": "#7a1f1a", "points": "Supports muscle recovery\nHelps reduce muscle soreness\nSupports recovery within 48 hours" } },
+        "sleep": { "type": "benefit", "settings": { "title": "Sleep", "image_key": "benefit-sleep.webp", "color": "#0e1330", "points": "Supports natural melatonin\nPromotes deeper, calmer rest\nImproves overall sleep quality" } },
+        "mental": { "type": "benefit", "settings": { "title": "Mental Health", "image_key": "benefit-mental-health.webp", "color": "#1a3a5c", "points": "Supports a balanced mood\nEases everyday stress\nBoosts mental clarity" } },
+        "cellular": { "type": "benefit", "settings": { "title": "Cellular Health", "image_key": "benefit-cellular-health.webp", "color": "#5f2a5f", "points": "Energizes the mitochondria\nSupports cellular repair\nBoosts natural ATP production" } }
+      },
+      "block_order": ["skin", "recovery", "sleep", "mental", "cellular"]
+    }
   },
-  "order": ["main"]
+  "order": ["main", "benefits"]
 }

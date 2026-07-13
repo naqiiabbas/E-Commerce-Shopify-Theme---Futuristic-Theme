@@ -7,9 +7,10 @@
     "css": "tailwindcss -i ./src/theme.css -o ./assets/theme.css",
     "css:watch": "tailwindcss -i ./src/theme.css -o ./assets/theme.css --watch",
     "css:build": "tailwindcss -i ./src/theme.css -o ./assets/theme.css --minify",
-    "dev": "shopify theme dev",
-    "push": "shopify theme push",
-    "pull": "shopify theme pull"
+    "dev": "npx @shopify/cli@latest theme dev --store somara-labs.myshopify.com",
+    "push": "npx @shopify/cli@latest theme push --store somara-labs.myshopify.com",
+    "pull": "npx @shopify/cli@latest theme pull --store somara-labs.myshopify.com",
+    "check": "npx @shopify/cli@latest theme check"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.1.0",

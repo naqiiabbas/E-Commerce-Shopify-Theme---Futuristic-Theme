@@ -1,5 +1,5 @@
 {%- comment -%} Ported 1:1 from src/components/layout/footer.tsx {%- endcomment -%}
-<footer class="relative mt-24 border-t border-[var(--color-border-soft)] bg-[var(--color-footer-bg)]">
+<footer class="relative {% unless request.page_type == 'index' %}mt-24{% endunless %} border-t border-[var(--color-border-soft)] bg-[var(--color-footer-bg)]">
   <div class="mx-auto grid max-w-7xl gap-12 px-6 py-16 lg:grid-cols-[1.3fr_repeat(3,1fr)] lg:px-8">
     <div>
       <p class="font-display text-3xl tracking-[-0.04em] text-[var(--color-ink)]">{{ shop.name }}</p>
@@ -58,9 +58,9 @@
   ],
   "default": {
     "blocks": [
-      { "type": "link_group", "settings": { "title": "Shop", "menu": "footer-shop" } },
-      { "type": "link_group", "settings": { "title": "Company", "menu": "footer-company" } },
-      { "type": "link_group", "settings": { "title": "Support", "menu": "footer-support" } }
+      { "type": "link_group", "settings": { "title": "Shop", "menu": "footer-1" } },
+      { "type": "link_group", "settings": { "title": "Company", "menu": "footer-2" } },
+      { "type": "link_group", "settings": { "title": "Support", "menu": "footer-3" } }
     ]
   }
 }
