@@ -249,6 +249,65 @@
     if (icon) icon.classList.toggle("rotate-45", !isOpen);
   });
 
+  /* -------------------- Carousels (auto-slide + prev/next) ------ */
+  function initCarousels() {
+    const reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    $$("[data-carousel]").forEach((car) => {
+      const track = $("[data-carousel-track]", car);
+      if (!track) return;
+
+      const step = () => {
+        const first = track.querySelector(":scope > *");
+        const w = first ? first.getBoundingClientRect().width : 320;
+        const gap = parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap || "24") || 24;
+        return w + gap;
+      };
+      const prev = $("[data-carousel-prev]", car);
+      const next = $("[data-carousel-next]", car);
+      if (prev) prev.addEventListener("click", () => track.scrollBy({ left: -step(), behavior: "smooth" }));
+      if (next) next.addEventListener("click", () => track.scrollBy({ left: step(), behavior: "smooth" }));
+
+      // Gentle infinite auto-slide. Recycle the first slide to the end as it
+      // scrolls out, so the loop never ends and never jumps.
+      const auto = car.getAttribute("data-carousel-auto") !== "false";
+      const designMode = window.Shopify && window.Shopify.designMode;
+      if (!auto || reduced || designMode) return;
+      if (track.children.length < 2) return;
+
+      const gap = parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap || "24") || 24;
+      const speed = parseFloat(car.getAttribute("data-carousel-speed")) || 0.5; // px per frame ≈ 30px/s
+      track.style.overflowAnchor = "none";
+      let paused = false;
+      // Accumulate the scroll position as a float — scrollLeft rounds to an
+      // integer, so sub-pixel increments must be tracked separately.
+      let pos = track.scrollLeft;
+      const resume = () => { paused = false; pos = track.scrollLeft; };
+      car.addEventListener("mouseenter", () => { paused = true; });
+      car.addEventListener("mouseleave", resume);
+      car.addEventListener("focusin", () => { paused = true; });
+      car.addEventListener("focusout", resume);
+      track.addEventListener("touchstart", () => { paused = true; }, { passive: true });
+      track.addEventListener("touchend", () => { setTimeout(resume, 2500); }, { passive: true });
+
+      function tick() {
+        if (!paused && track.scrollWidth > track.clientWidth + 4) {
+          pos += speed;
+          const first = track.firstElementChild;
+          if (first) {
+            const firstW = first.getBoundingClientRect().width + gap;
+            if (pos >= firstW) {
+              track.appendChild(first);
+              pos -= firstW;
+            }
+          }
+          track.scrollLeft = pos;
+        }
+        requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    });
+  }
+
   /* -------------------- Custom cursor (dot + trailing ring) ----- */
   function initCursor() {
     const dot = $("[data-cursor-dot]");
@@ -335,6 +394,6 @@
     update();
   }
 
-  if (document.readyState !== "loading") { initReveal(); initScrollProgress(); initHeroVideo(); initCursor(); }
-  else document.addEventListener("DOMContentLoaded", () => { initReveal(); initScrollProgress(); initHeroVideo(); initCursor(); });
+  if (document.readyState !== "loading") { initReveal(); initScrollProgress(); initHeroVideo(); initCursor(); initCarousels(); }
+  else document.addEventListener("DOMContentLoaded", () => { initReveal(); initScrollProgress(); initHeroVideo(); initCursor(); initCarousels(); });
 })();

@@ -5,13 +5,13 @@
 {%- endcomment -%}
 {%- assign p = card_product -%}
 {%- if p == blank or p == empty -%}
-  <article class="flex aspect-[3/4] flex-col items-center justify-center rounded-[24px] border border-dashed border-[var(--color-border-strong)] bg-[var(--color-surface)] p-8 text-center">
+  <article class="flex h-full min-h-[24rem] flex-col items-center justify-center rounded-[24px] border border-dashed border-[var(--color-border-strong)] bg-[var(--color-surface)] p-8 text-center">
     <p class="font-display text-2xl text-[var(--color-ink)]">Choose a product</p>
     <p class="mt-2 text-sm text-[var(--color-muted)]">In Customize → Home → Product showcase, pick which product to feature here.</p>
   </article>
 {%- else -%}
   {%- assign hover_image = p.images[1] -%}
-  <article class="group flex flex-col overflow-hidden rounded-[24px] border border-[var(--color-border-soft)] bg-[var(--color-surface)] p-4 transition hover:bg-[var(--color-surface-soft)]">
+  <article class="group flex h-full flex-col overflow-hidden rounded-[24px] border border-[var(--color-border-soft)] bg-[var(--color-surface)] p-4 transition hover:bg-[var(--color-surface-soft)]">
     <a href="{{ p.url }}" class="block">
       <div class="relative aspect-[4/5] w-full overflow-hidden rounded-[18px] bg-[var(--color-paper)]">
         {%- if p.featured_image -%}

@@ -212,6 +212,54 @@ button:disabled {
   border-radius: 9999px;
 }
 
+/* Animated shine that travels around a card's border on hover. */
+@property --shine-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+.shine-border {
+  position: relative;
+}
+.shine-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: conic-gradient(
+    from var(--shine-angle),
+    transparent 0%,
+    var(--color-brand-highlight) 12%,
+    transparent 30%,
+    transparent 100%
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 350ms ease;
+  pointer-events: none;
+}
+.shine-border:hover::before,
+.shine-border:focus-within::before {
+  opacity: 1;
+  animation: shine-spin 2.4s linear infinite;
+}
+@keyframes shine-spin {
+  to {
+    --shine-angle: 360deg;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .shine-border:hover::before,
+  .shine-border:focus-within::before {
+    animation: none;
+  }
+}
+
 /* Product benefit cards — reveal bullet points on hover; always shown on touch. */
 .benefit-points {
   max-height: 0;

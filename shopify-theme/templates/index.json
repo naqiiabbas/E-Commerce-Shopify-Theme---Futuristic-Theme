@@ -3,56 +3,63 @@
     "home": {
       "type": "home",
       "settings": {
-        "hero_eyebrow": "Premium recovery technology",
-        "hero_title": "Red light therapy built to anchor your at-home recovery ritual.",
-        "hero_description": "Somara Labs is a luxury recovery equipment brand built around red light therapy panels in three core sizes: quarter, half, and full body.",
-        "hero_cta_label": "Shop Recovery Systems",
+        "hero_eyebrow": "Premium light therapy technology",
+        "hero_title": "Light. Recover. Renew.",
+        "hero_description": "Premium red light, laser, and skin therapy devices designed to support recovery, skin health, and daily wellness routines at home.",
+        "hero_cta_label": "Shop Red Light Panels",
         "hero_cta_link": "shopify://collections/all",
-        "stat_1_value": "3",
-        "stat_1_label": "panel sizes in the core line",
-        "stat_2_value": "Flagship",
-        "stat_2_label": "red light panels lead the brand",
+        "hero_cta2_label": "Explore the Technology",
+        "hero_cta2_link": "/pages/technology",
+        "hero_credibility": "Developed in partnership with Ahnah Clinic by Dr. Anmol. Unsure which device is right for you? Experience red light therapy in person at Ahnah Clinic and decide with confidence.",
+        "stat_1_value": "5",
+        "stat_1_label": "red & near-infrared wavelengths",
+        "stat_2_value": "FDA",
+        "stat_2_label": "cleared light therapy technology",
         "products_eyebrow": "The Collection",
-        "products_title": "Luxury at-home recovery equipment built around red light therapy.",
+        "products_title": "Find the Somara device built for your routine.",
         "product_1": "red-light-panels",
-        "product_2": "dry-sauna",
-        "product_3": "compression-boots",
-        "benefits_eyebrow": "The Science",
-        "benefits_title": "Recovery benefits that shape the entire brand.",
-        "stat_big_number": "3",
-        "stat_big_label": "panel sizes in the flagship red light line",
-        "reviews_eyebrow": "Recovery-first customer feedback",
+        "product_2": "laser-hair-growth-cap",
+        "product_3": "somara-aura",
+        "benefits_eyebrow": "Use cases",
+        "benefits_title": "Designed to support your daily wellness routine.",
+        "stat_big_number": "0",
+        "stat_big_label": "EMF at 3+ inches — engineered for safe, comfortable daily use",
+        "cred_eyebrow": "Clinical partnership & early access",
+        "cred_title": "Backed by clinical partnership, not borrowed hype.",
+        "cred_description": "Somara is developed in partnership with Ahnah Clinic by Dr. Anmol. We're in early access — so instead of borrowed reviews, we invite you to experience the technology in person and choose with confidence.",
         "faq_eyebrow": "Support",
         "faq_title": "Frequently asked questions.",
-        "faq_description": "Everything you need to know about the products, shipping, and returns.",
-        "faq_cta_label": "Contact Support"
+        "faq_description": "How to choose a device, safety, warranty, and local support in Pakistan.",
+        "faq_cta_label": "Get Guidance"
       },
       "blocks": {
-        "benefit-1": {
-          "type": "benefit",
-          "settings": { "icon": "moon", "title": "Sleep Support", "description": "Use recovery light routines to support deeper, more restorative sleep." }
-        },
-        "benefit-2": {
-          "type": "benefit",
-          "settings": { "icon": "zap", "title": "Muscle Recovery", "description": "Speed up post-training recovery with light therapy and compression." }
-        },
-        "benefit-3": {
-          "type": "benefit",
-          "settings": { "icon": "shield-check", "title": "Inflammation Support", "description": "Target daily soreness and recovery load with cellular-level support." }
-        },
-        "benefit-4": {
-          "type": "benefit",
-          "settings": { "icon": "sun", "title": "Wellness Optimization", "description": "Create a consistent ritual for restoration, circulation, and performance." }
-        },
+        "benefit-1": { "type": "benefit", "settings": { "icon": "sun", "title": "Skin appearance", "description": "Commonly used for skin appearance, complexion, and a healthy-looking glow as part of a daily routine." } },
+        "benefit-2": { "type": "benefit", "settings": { "icon": "zap", "title": "Recovery", "description": "Designed to support muscle recovery and post-training wind-down routines." } },
+        "benefit-3": { "type": "benefit", "settings": { "icon": "sun", "title": "Energy & daily routine", "description": "Helps build a calm, consistent light-therapy routine you can keep to daily." } },
+        "benefit-4": { "type": "benefit", "settings": { "icon": "shield-check", "title": "Hair density support", "description": "Designed to support scalp and hair-density routines with the Somara Cap 306." } },
+        "benefit-5": { "type": "benefit", "settings": { "icon": "moon", "title": "Face therapy", "description": "Supports skin-focused face therapy sessions with the Somara Aura LED mask." } },
+        "benefit-6": { "type": "benefit", "settings": { "icon": "shield-check", "title": "Home wellness setup", "description": "Built to anchor a premium home wellness setup, not a clinic." } },
+        "why-1": { "type": "why", "settings": { "icon": "shield-check", "text": "Developed in partnership with Ahnah Clinic by Dr. Anmol." } },
+        "why-2": { "type": "why", "settings": { "icon": "award", "text": "Brought to Pakistan for the first time in a serious, premium format." } },
+        "why-3": { "type": "why", "settings": { "icon": "check", "text": "FDA cleared, evidence-informed light therapy devices." } },
+        "why-4": { "type": "why", "settings": { "icon": "sun", "text": "5-wavelength red & near-infrared panels with separate red/NIR controls." } },
+        "why-5": { "type": "why", "settings": { "icon": "zap", "text": "Flicker-free operation and a low-EMF design (0 EMF at 3+ inches)." } },
+        "why-6": { "type": "why", "settings": { "icon": "shield-check", "text": "3-year warranty with local support in Pakistan." } },
+        "local-1": { "type": "local", "settings": { "icon": "shield-check", "title": "Available in Pakistan", "text": "Real local availability — not an import-only gray market." } },
+        "local-2": { "type": "local", "settings": { "icon": "award", "title": "Local delivery", "text": "Delivered to your door across Pakistan." } },
+        "local-3": { "type": "local", "settings": { "icon": "check", "title": "Product guidance", "text": "Talk to our team to choose the device that fits your routine." } },
+        "local-4": { "type": "local", "settings": { "icon": "shield-check", "title": "Warranty support", "text": "3-year warranty, supported locally." } },
+        "local-5": { "type": "local", "settings": { "icon": "sun", "title": "In-clinic experience", "text": "Experience the technology in person at Ahnah Clinic before you buy." } },
+        "local-6": { "type": "local", "settings": { "icon": "zap", "title": "Consultation support", "text": "Get guidance over WhatsApp or in person, whenever you need it." } },
         "feature-1": {
           "type": "feature",
           "settings": {
-            "eyebrow": "Flagship Category",
-            "title": "Red light panels are the heart of the Somara Labs recovery system.",
-            "description": "Offered in quarter, half, and full body sizes, our red light therapy panels are the defining product line across recovery, inflammation reduction, sleep support, skin health, and performance.",
-            "benefits": "Quarter, half, and full body panel options\nRecovery, inflammation, and sleep support\nSkin health and muscle recovery optimization",
-            "cta_label": "Explore red light therapy",
-            "cta_link": "/products/red-light-panels",
+            "eyebrow": "The core system",
+            "title": "Five-wavelength red and near-infrared panels, with separate controls.",
+            "description": "Somara One, Core, and Max deliver red and near-infrared light across five wavelengths, with separate red/NIR controls, flicker-free operation, and a low-EMF design.",
+            "benefits": "Five wavelengths of red & near-infrared light\nSeparate red / NIR controls\nFlicker-free operation, low EMF design\n3-year warranty on every panel",
+            "cta_label": "Shop red light panels",
+            "cta_link": "/collections/all",
             "accent": "sage",
             "video_key": "feature-redlight.mp4"
           }
@@ -60,63 +67,36 @@
         "feature-2": {
           "type": "feature",
           "settings": {
-            "eyebrow": "Recovery Ecosystem",
-            "title": "Sauna and compression complete the ritual around the core light therapy experience.",
-            "description": "Our supporting categories expand the system into detox, circulation, athletic recovery, and restoration so the brand feels like a complete premium at-home recovery environment.",
-            "benefits": "At-home dry sauna for detox and relaxation\nAccelerated muscle recovery\nCompression boots for circulation and lymphatic drainage\nPositioned for sports recovery and elite wellness",
-            "cta_label": "Shop the full recovery lineup",
+            "eyebrow": "Beyond panels",
+            "title": "Targeted laser and LED face therapy complete the system.",
+            "description": "The Somara Cap 306 laser hair-growth cap and Aura LED face mask extend the system into scalp and skin-focused routines — the same premium standard as the panels.",
+            "benefits": "Somara Cap 306 — 306-diode laser hair cap\nSomara Aura — 5-wavelength LED face mask\nDesigned for daily, at-home routines\nBacked by the same 3-year warranty",
+            "cta_label": "Explore the full lineup",
             "cta_link": "/collections/all",
-            "accent": "blue",
-            "image_key": "poster-sauna.webp"
+            "accent": "peach",
+            "image_key": "poster-redlight.webp"
           }
         },
-        "review-1": {
-          "type": "review",
-          "settings": { "quote": "The red light panel became the center of my recovery routine within a week. It feels like performance equipment, but refined enough to live in a luxury home gym.", "name": "Sarah Jenkins", "role": "Verified Buyer" }
-        },
-        "review-2": {
-          "type": "review",
-          "settings": { "quote": "The compression boots are the perfect complement to the panels. Recovery is faster, my legs feel lighter, and the whole setup feels premium from end to end.", "name": "Marcus T.", "role": "Verified Buyer" }
-        },
-        "review-3": {
-          "type": "review",
-          "settings": { "quote": "Somara Labs has a much sharper point of view than a generic wellness store. The focus on red light therapy gives the brand real authority in premium recovery.", "name": "Elena Rodriguez", "role": "Wellness Editor" }
-        },
-        "faq-1": {
-          "type": "faq",
-          "settings": { "question": "Do you offer international shipping?", "answer": "Yes, we ship globally. Shipping costs and delivery times are calculated at checkout based on your location." }
-        },
-        "faq-2": {
-          "type": "faq",
-          "settings": { "question": "What is your return policy?", "answer": "We offer a 30-day risk-free home trial. If you don't love it, return it for a full refund. We even cover the return shipping." }
-        },
-        "faq-3": {
-          "type": "faq",
-          "settings": { "question": "What panel sizes do you offer for red light therapy?", "answer": "Our flagship red light therapy line is positioned around three formats: quarter panel, half panel, and full body panel, so customers can choose the setup that fits their space and recovery goals." }
-        },
-        "faq-4": {
-          "type": "faq",
-          "settings": { "question": "Who are compression boots designed for?", "answer": "Compression boots are positioned for athletic recovery, circulation support, lymphatic drainage, and muscle recovery, making them especially relevant for performance-focused customers." }
-        },
-        "trust-1": {
-          "type": "trust",
-          "settings": { "value": "5,000+", "label": "five-star reviews from verified customers" }
-        },
-        "trust-2": {
-          "type": "trust",
-          "settings": { "value": "30-Day", "label": "home trial guarantee" }
-        },
-        "trust-3": {
-          "type": "trust",
-          "settings": { "value": "FDA", "label": "cleared technology" }
-        }
+        "credibility-1": { "type": "credibility", "settings": { "icon": "shield-check", "title": "Clinical partnership", "text": "Developed in partnership with Ahnah Clinic by Dr. Anmol — clinical grounding, not borrowed hype." } },
+        "credibility-2": { "type": "credibility", "settings": { "icon": "award", "title": "Try before you buy", "text": "Experience red light therapy in person at Ahnah Clinic and choose your device with confidence." } },
+        "credibility-3": { "type": "credibility", "settings": { "icon": "zap", "title": "Early access", "text": "Somara is bringing serious premium light therapy to Pakistan for the first time. Join early access for guidance and priority support." } },
+        "faq-1": { "type": "faq", "settings": { "question": "How do I choose between Somara One, Core, and Max?", "answer": "One is a compact targeted panel, Core is a mid-size half-body panel, and Max is a full-body panel. Choose based on your space and how much of the body you want to cover — our team can help you decide." } },
+        "faq-2": { "type": "faq", "settings": { "question": "Are Somara devices safe to use at home?", "answer": "Yes. The panels are flicker-free with a low-EMF design (0 EMF at 3+ inches). Always follow the usage guidance and safety notes included with each device." } },
+        "faq-3": { "type": "faq", "settings": { "question": "Do you offer local support in Pakistan?", "answer": "Yes — Somara offers local delivery, product guidance, and warranty support in Pakistan, plus an in-person experience at Ahnah Clinic." } },
+        "faq-4": { "type": "faq", "settings": { "question": "What warranty is included?", "answer": "Every Somara device comes with a 3-year warranty and local support." } },
+        "trust-1": { "type": "trust", "settings": { "value": "3-Year", "label": "warranty on every Somara device" } },
+        "trust-2": { "type": "trust", "settings": { "value": "FDA", "label": "cleared light therapy technology" } },
+        "trust-3": { "type": "trust", "settings": { "value": "Flicker-free", "label": "operation for comfortable daily use" } },
+        "trust-4": { "type": "trust", "settings": { "value": "Low EMF", "label": "design — 0 EMF at 3+ inches on panels" } }
       },
       "block_order": [
-        "benefit-1", "benefit-2", "benefit-3", "benefit-4",
+        "why-1", "why-2", "why-3", "why-4", "why-5", "why-6",
+        "benefit-1", "benefit-2", "benefit-3", "benefit-4", "benefit-5", "benefit-6",
         "feature-1", "feature-2",
-        "review-1", "review-2", "review-3",
+        "local-1", "local-2", "local-3", "local-4", "local-5", "local-6",
+        "credibility-1", "credibility-2", "credibility-3",
         "faq-1", "faq-2", "faq-3", "faq-4",
-        "trust-1", "trust-2", "trust-3"
+        "trust-1", "trust-2", "trust-3", "trust-4"
       ]
     }
   },

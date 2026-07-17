@@ -52,8 +52,14 @@
       <h1 class="mt-6 max-w-2xl font-display text-5xl leading-[1.05] tracking-[-0.04em] sm:text-7xl lg:text-7xl">{{ s.hero_title }}</h1>
       <p class="mt-6 max-w-xl text-lg leading-8 text-[var(--color-hero-muted)]">{{ s.hero_description }}</p>
       <div class="mt-8 flex flex-col gap-4 sm:flex-row">
-        <a href="{{ s.hero_cta_link | default: '#' }}" class="inline-flex items-center justify-center rounded-full bg-[var(--color-hero-fg)] px-5 py-3 text-sm font-semibold tracking-[0.02em] text-[var(--color-hero-bg)] shadow-[0_18px_40px_var(--color-brand-glow)] transition-all duration-300 hover:bg-[var(--color-surface-strong)]">{{ s.hero_cta_label }}</a>
+        <a href="{{ s.hero_cta_link | default: '#' }}" class="inline-flex items-center justify-center rounded-full bg-[var(--color-hero-fg)] px-5 py-3 text-sm font-semibold tracking-[0.02em] text-[var(--color-hero-bg)] shadow-[0_18px_40px_var(--color-brand-glow)] transition-all duration-300 hover:-translate-y-0.5 hover:opacity-90 hover:shadow-[0_22px_50px_var(--color-brand-glow)]">{{ s.hero_cta_label }}</a>
+        {%- if s.hero_cta2_label != blank -%}
+          <a href="{{ s.hero_cta2_link | default: '#' }}" class="inline-flex items-center justify-center rounded-full border border-[var(--color-hero-fg)]/30 px-5 py-3 text-sm font-semibold tracking-[0.02em] text-[var(--color-hero-fg)] transition-all duration-300 hover:bg-[var(--color-hero-fg)]/10">{{ s.hero_cta2_label }}</a>
+        {%- endif -%}
       </div>
+      {%- if s.hero_credibility != blank -%}
+        <p class="mt-6 max-w-xl text-xs leading-6 text-[var(--color-hero-muted)]">{{ s.hero_credibility }}</p>
+      {%- endif -%}
       <div class="mt-12 flex items-center gap-6 text-sm text-[var(--color-hero-muted)]">
         <div>
           <p class="font-display text-3xl font-medium text-[var(--color-hero-fg)]">{{ s.stat_1_value }}</p>
@@ -78,26 +84,31 @@
   </div>
 </section>
 
-{%- comment -%} ============ 2. As seen in ============ {%- endcomment -%}
-<section class="border-b border-[var(--color-overlay-soft)] bg-[var(--color-paper)] px-6 py-12 lg:px-8">
-  <div class="mx-auto flex max-w-7xl flex-col items-center justify-center gap-10 md:flex-row md:gap-16">
-    <p class="whitespace-nowrap text-sm font-semibold uppercase tracking-[0.15em] text-[var(--color-ink)]">As seen in</p>
-    <div class="flex flex-wrap items-center justify-center gap-10 text-[var(--color-ink)] opacity-90 md:gap-16 lg:gap-24">
-      <span class="font-display text-4xl uppercase tracking-widest" style="transform:scaleY(0.95)">Vogue</span>
-      <span class="font-sans text-2xl font-black uppercase tracking-tighter" style="transform:scaleY(1.1)">Cosmopolitan</span>
-      <span class="font-sans text-2xl tracking-tight"><strong class="font-semibold">Wellness</strong>Pulse</span>
-    </div>
-  </div>
-</section>
-
-{%- comment -%} ============ 3. Product Showcase ============ {%- endcomment -%}
+{%- comment -%} ============ 2. Product Showcase ============ {%- endcomment -%}
 <section class="bg-[var(--color-paper)] px-6 py-24 lg:px-8 lg:py-32">
   <div class="mx-auto max-w-7xl">
     {% render 'section-heading', eyebrow: s.products_eyebrow, heading: s.products_title, align: 'center' %}
     <div class="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-      <div class="reveal">{% render 'home-product-card', card_product: s.product_1 %}</div>
-      <div class="reveal">{% render 'home-product-card', card_product: s.product_2 %}</div>
-      <div class="reveal">{% render 'home-product-card', card_product: s.product_3 %}</div>
+      <div class="reveal h-full">{% render 'home-product-card', card_product: s.product_1 %}</div>
+      <div class="reveal h-full">{% render 'home-product-card', card_product: s.product_2 %}</div>
+      <div class="reveal h-full">{% render 'home-product-card', card_product: s.product_3 %}</div>
+    </div>
+  </div>
+</section>
+
+{%- comment -%} ============ 3. Why Somara ============ {%- endcomment -%}
+<section class="bg-[var(--color-paper)] px-6 py-24 lg:px-8 lg:py-32">
+  <div class="mx-auto max-w-7xl">
+    {% render 'section-heading', eyebrow: s.why_eyebrow, heading: s.why_title, align: 'center' %}
+    <div class="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'why' -%}
+          <div class="reveal shine-border flex items-start gap-4 rounded-2xl border border-[var(--color-border-soft)] bg-[var(--color-surface-soft)] p-6" {{ block.shopify_attributes }}>
+            <span class="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--color-accent-sage)]/30 text-[var(--color-ink)]">{% render 'icon', name: block.settings.icon, size: 18 %}</span>
+            <p class="text-sm leading-7 text-[var(--color-ink)]">{{ block.settings.text }}</p>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
     </div>
   </div>
 </section>
@@ -121,11 +132,11 @@
 <section class="bg-[var(--color-paper)] px-6 py-24 lg:px-8 lg:py-32">
   <div class="mx-auto max-w-7xl">
     {% render 'section-heading', eyebrow: s.benefits_eyebrow, heading: s.benefits_title, align: 'center' %}
-    <div class="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
       {%- assign bi = 0 -%}
       {%- for block in section.blocks -%}
         {%- if block.type == 'benefit' -%}
-          <div class="reveal flex flex-col items-center rounded-3xl bg-[var(--color-surface-strong)] p-8 text-center shadow-sm" style="--reveal-delay:{{ bi | times: 0.1 }}s" {{ block.shopify_attributes }}>
+          <div class="reveal shine-border flex flex-col items-center rounded-3xl bg-[var(--color-surface-strong)] p-8 text-center shadow-sm" style="--reveal-delay:{{ bi | times: 0.1 }}s" {{ block.shopify_attributes }}>
             <div class="flex h-16 w-16 items-center justify-center rounded-full bg-[var(--color-accent-peach)]/20 text-[var(--color-accent-peach)]">
               {% render 'icon', name: block.settings.icon, size: 28 %}
             </div>
@@ -165,30 +176,64 @@
   </div>
 </section>
 
-{%- comment -%} ============ 8. Reviews ============ {%- endcomment -%}
+{%- comment -%} ============ 8. Clinical partnership & early access ============ {%- endcomment -%}
 <section class="bg-[var(--color-panel-dark)] px-6 py-24 text-[var(--color-hero-fg)] lg:px-8 lg:py-32">
-  <div class="mx-auto max-w-7xl text-center">
-    <p class="text-sm font-semibold uppercase tracking-widest text-[var(--color-panel-dark-muted)]">{{ s.reviews_eyebrow }}</p>
-    <div class="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {%- assign ri = 0 -%}
+  <div class="mx-auto max-w-7xl">
+    <div class="reveal max-w-3xl">
+      <p class="text-sm font-semibold uppercase tracking-widest text-[var(--color-panel-dark-muted)]">{{ s.cred_eyebrow }}</p>
+      <h2 class="mt-4 font-display text-4xl leading-[1] tracking-[-0.03em] text-[var(--color-hero-fg)] sm:text-5xl">{{ s.cred_title }}</h2>
+      {%- if s.cred_description != blank -%}
+        <p class="mt-5 text-lg leading-8 text-[var(--color-panel-dark-muted)]">{{ s.cred_description }}</p>
+      {%- endif -%}
+    </div>
+    <div class="mt-16 grid gap-y-10 sm:grid-cols-3 sm:gap-y-0">
+      {%- assign ci = 0 -%}
       {%- for block in section.blocks -%}
-        {%- if block.type == 'review' -%}
-          <div class="reveal rounded-[24px] border border-[var(--color-border-inverse)] bg-[var(--color-panel-dark)] p-8 text-left backdrop-blur-md" style="--reveal-delay:{{ ri | times: 0.1 }}s" {{ block.shopify_attributes }}>
-            <div class="flex gap-1 text-[var(--color-accent-peach)]">
-              {%- for i in (1..5) -%}{% render 'icon', name: 'star', size: 16, fill: 'currentColor' %}{%- endfor -%}
+        {%- if block.type == 'credibility' -%}
+          <div class="reveal relative pt-8 sm:px-8 sm:pt-0 {% if ci > 0 %}border-t border-[var(--color-border-inverse)] sm:border-l sm:border-t-0{% else %}sm:pl-0{% endif %}" style="--reveal-delay:{{ ci | times: 0.1 }}s" {{ block.shopify_attributes }}>
+            <div class="flex items-center gap-4">
+              <span class="font-display text-2xl leading-none text-[var(--color-accent-peach)]">0{{ ci | plus: 1 }}</span>
+              <span class="h-px flex-1 bg-[var(--color-border-inverse)]"></span>
+              <span class="text-[var(--color-accent-peach)]">{% render 'icon', name: block.settings.icon, size: 22 %}</span>
             </div>
-            <p class="mt-6 text-lg leading-relaxed text-[var(--color-hero-fg)]">&ldquo;{{ block.settings.quote }}&rdquo;</p>
-            <div class="mt-8 flex items-center gap-3">
-              <div class="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-surface-muted)] text-sm font-medium text-[var(--color-hero-fg)]">{{ block.settings.name | slice: 0 }}</div>
-              <div>
-                <p class="text-sm font-medium text-[var(--color-hero-fg)]">{{ block.settings.name }}</p>
-                <p class="text-xs text-[var(--color-panel-dark-muted)]">{{ block.settings.role }}</p>
-              </div>
-            </div>
+            <h3 class="mt-6 font-display text-2xl tracking-[-0.02em] text-[var(--color-hero-fg)]">{{ block.settings.title }}</h3>
+            <p class="mt-3 text-sm leading-7 text-[var(--color-panel-dark-muted)]">{{ block.settings.text }}</p>
           </div>
-          {%- assign ri = ri | plus: 1 -%}
+          {%- assign ci = ci | plus: 1 -%}
         {%- endif -%}
       {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{%- comment -%} ============ 6. Local trust (Pakistan) ============ {%- endcomment -%}
+<section class="bg-[var(--color-paper-strong)] px-6 py-24 lg:px-8 lg:py-32">
+  <div class="mx-auto max-w-7xl">
+    <div class="flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
+      <div class="reveal max-w-2xl">
+        {% render 'section-heading', eyebrow: s.local_eyebrow, heading: s.local_title, description: s.local_description %}
+      </div>
+      <div class="hidden shrink-0 items-center gap-3 sm:flex">
+        <button type="button" data-carousel-prev aria-label="Previous" class="flex h-11 w-11 items-center justify-center rounded-full border border-[var(--color-border-strong)] text-[var(--color-ink)] transition hover:bg-[var(--color-overlay-soft)]"><span class="inline-flex rotate-180">{% render 'icon', name: 'arrow-right', size: 18 %}</span></button>
+        <button type="button" data-carousel-next aria-label="Next" class="flex h-11 w-11 items-center justify-center rounded-full border border-[var(--color-border-strong)] text-[var(--color-ink)] transition hover:bg-[var(--color-overlay-soft)]">{% render 'icon', name: 'arrow-right', size: 18 %}</button>
+      </div>
+    </div>
+
+    <div data-carousel class="relative mt-12">
+      <div data-carousel-track class="scrollbar-hide flex gap-6 overflow-x-auto pb-2">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'local' -%}
+            <article class="shine-border w-[280px] shrink-0 snap-start rounded-3xl border border-[var(--color-border-soft)] bg-[var(--color-surface)] p-8 sm:w-[340px]" {{ block.shopify_attributes }}>
+              <span class="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--color-accent-blue)]/30 text-[var(--color-ink)]">{% render 'icon', name: block.settings.icon, size: 22 %}</span>
+              <h3 class="mt-6 text-lg font-semibold text-[var(--color-ink)]">{{ block.settings.title }}</h3>
+              <p class="mt-2 text-sm leading-7 text-[var(--color-muted)]">{{ block.settings.text }}</p>
+            </article>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+      {%- comment -%} Edge fades on both sides where slides enter/exit {%- endcomment -%}
+      <div class="pointer-events-none absolute inset-y-0 left-0 z-10 hidden w-16 bg-gradient-to-r from-[var(--color-paper-strong)] to-transparent sm:block"></div>
+      <div class="pointer-events-none absolute inset-y-0 right-0 z-10 hidden w-16 bg-gradient-to-l from-[var(--color-paper-strong)] to-transparent sm:block"></div>
     </div>
   </div>
 </section>
@@ -224,6 +269,22 @@
   </div>
 </section>
 
+{%- comment -%} ============ 9. Final CTA ============ {%- endcomment -%}
+<section class="bg-[var(--color-hero-bg)] px-6 py-24 text-center lg:px-8 lg:py-32">
+  <div class="reveal mx-auto max-w-3xl">
+    <h2 class="font-display text-4xl leading-[1.05] tracking-[-0.03em] text-[var(--color-hero-fg)] sm:text-6xl">{{ s.final_title }}</h2>
+    {%- if s.final_description != blank -%}
+      <p class="mx-auto mt-5 max-w-xl text-lg leading-8 text-[var(--color-hero-muted)]">{{ s.final_description }}</p>
+    {%- endif -%}
+    <div class="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+      <a href="{{ s.final_cta_link | default: '/collections/all' }}" class="rounded-full bg-[var(--color-hero-fg)] px-8 py-4 text-sm font-semibold text-[var(--color-hero-bg)] shadow-[0_18px_40px_var(--color-brand-glow)] transition-all duration-300 hover:-translate-y-0.5 hover:opacity-90 hover:shadow-[0_22px_50px_var(--color-brand-glow)]">{{ s.final_cta_label }}</a>
+      {%- if s.final_cta2_label != blank -%}
+        <a href="{{ s.final_cta2_link | default: '/pages/contact' }}" class="rounded-full border border-[var(--color-hero-fg)]/30 px-8 py-4 text-sm font-semibold text-[var(--color-hero-fg)] transition hover:bg-[var(--color-hero-fg)]/10">{{ s.final_cta2_label }}</a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
 {% schema %}
 {
   "name": "Home",
@@ -232,8 +293,11 @@
     { "type": "text", "id": "hero_eyebrow", "label": "Eyebrow", "default": "Premium recovery technology" },
     { "type": "textarea", "id": "hero_title", "label": "Title", "default": "Red light therapy built to anchor your at-home recovery ritual." },
     { "type": "textarea", "id": "hero_description", "label": "Description", "default": "Somara Labs is a luxury recovery equipment brand built around red light therapy panels in three core sizes: quarter, half, and full body." },
-    { "type": "text", "id": "hero_cta_label", "label": "Hero button label", "default": "Shop Recovery Systems" },
-    { "type": "url", "id": "hero_cta_link", "label": "Hero button link" },
+    { "type": "text", "id": "hero_cta_label", "label": "Primary button label", "default": "Shop Red Light Panels" },
+    { "type": "url", "id": "hero_cta_link", "label": "Primary button link" },
+    { "type": "text", "id": "hero_cta2_label", "label": "Secondary button label", "default": "Explore the Technology" },
+    { "type": "url", "id": "hero_cta2_link", "label": "Secondary button link" },
+    { "type": "textarea", "id": "hero_credibility", "label": "Credibility line (small)", "default": "Developed in partnership with Ahnah Clinic by Dr. Anmol. Unsure which device is right for you? Experience red light therapy in person at Ahnah Clinic and decide with confidence." },
     { "type": "text", "id": "stat_1_value", "label": "Stat 1 value", "default": "3" },
     { "type": "text", "id": "stat_1_label", "label": "Stat 1 label", "default": "panel sizes in the core line" },
     { "type": "text", "id": "stat_2_value", "label": "Stat 2 value", "default": "Flagship" },
@@ -248,6 +312,10 @@
     { "type": "product", "id": "product_2", "label": "Product 2" },
     { "type": "product", "id": "product_3", "label": "Product 3" },
 
+    { "type": "header", "content": "Why Somara", "info": "Add 'Why Somara point' blocks below." },
+    { "type": "text", "id": "why_eyebrow", "label": "Eyebrow", "default": "Why Somara" },
+    { "type": "textarea", "id": "why_title", "label": "Title", "default": "Premium light therapy, built to be trusted." },
+
     { "type": "header", "content": "Red light banner" },
     { "type": "video", "id": "ritual_video", "label": "Banner video", "info": "Upload a video here to show motion. Leave blank to show the still image." },
     { "type": "text", "id": "ritual_video_url", "label": "Banner video URL (alternative)", "info": "Optional: paste an external/Files URL instead of uploading above." },
@@ -260,8 +328,23 @@
     { "type": "text", "id": "stat_big_number", "label": "Number", "default": "3" },
     { "type": "textarea", "id": "stat_big_label", "label": "Label", "default": "panel sizes in the flagship red light line" },
 
-    { "type": "header", "content": "Reviews" },
-    { "type": "text", "id": "reviews_eyebrow", "label": "Eyebrow", "default": "Recovery-first customer feedback" },
+    { "type": "header", "content": "Clinical partnership & early access" },
+    { "type": "text", "id": "cred_eyebrow", "label": "Eyebrow", "default": "Clinical partnership & early access" },
+    { "type": "textarea", "id": "cred_title", "label": "Title", "default": "Backed by clinical partnership, not borrowed hype." },
+    { "type": "textarea", "id": "cred_description", "label": "Description", "default": "Somara is developed in partnership with Ahnah Clinic by Dr. Anmol. We're in early access — so instead of borrowed reviews, we invite you to experience the technology in person and choose with confidence." },
+
+    { "type": "header", "content": "Local trust (Pakistan)", "info": "Add 'Local trust point' blocks below." },
+    { "type": "text", "id": "local_eyebrow", "label": "Eyebrow", "default": "Available in Pakistan" },
+    { "type": "textarea", "id": "local_title", "label": "Title", "default": "Premium wellness technology, finally available locally." },
+    { "type": "textarea", "id": "local_description", "label": "Description", "default": "Local delivery, product guidance, warranty support, and an in-person experience at Ahnah Clinic." },
+
+    { "type": "header", "content": "Final CTA" },
+    { "type": "textarea", "id": "final_title", "label": "Title", "default": "Build your daily red light therapy routine at home." },
+    { "type": "textarea", "id": "final_description", "label": "Description", "default": "Choose your Somara device, or get guidance from our team before you decide." },
+    { "type": "text", "id": "final_cta_label", "label": "Primary button label", "default": "Shop Somara Devices" },
+    { "type": "url", "id": "final_cta_link", "label": "Primary button link" },
+    { "type": "text", "id": "final_cta2_label", "label": "Secondary button label", "default": "Get Guidance" },
+    { "type": "url", "id": "final_cta2_link", "label": "Secondary button link" },
 
     { "type": "header", "content": "FAQ" },
     { "type": "text", "id": "faq_eyebrow", "label": "Eyebrow", "default": "Support" },
@@ -273,13 +356,34 @@
   "blocks": [
     {
       "type": "benefit",
-      "name": "Benefit",
+      "name": "Use case",
       "settings": [
         { "type": "select", "id": "icon", "label": "Icon", "default": "moon", "options": [
           { "value": "moon", "label": "Moon" }, { "value": "zap", "label": "Zap" },
           { "value": "shield-check", "label": "Shield" }, { "value": "sun", "label": "Sun" } ] },
         { "type": "text", "id": "title", "label": "Title" },
         { "type": "textarea", "id": "description", "label": "Description" }
+      ]
+    },
+    {
+      "type": "why",
+      "name": "Why Somara point",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon", "default": "check", "options": [
+          { "value": "check", "label": "Check" }, { "value": "shield-check", "label": "Shield" },
+          { "value": "award", "label": "Award" }, { "value": "zap", "label": "Zap" }, { "value": "sun", "label": "Sun" } ] },
+        { "type": "textarea", "id": "text", "label": "Text" }
+      ]
+    },
+    {
+      "type": "local",
+      "name": "Local trust point",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon", "default": "shield-check", "options": [
+          { "value": "shield-check", "label": "Shield" }, { "value": "award", "label": "Award" },
+          { "value": "check", "label": "Check" }, { "value": "zap", "label": "Zap" }, { "value": "sun", "label": "Sun" } ] },
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "textarea", "id": "text", "label": "Text" }
       ]
     },
     {
@@ -305,12 +409,14 @@
       ]
     },
     {
-      "type": "review",
-      "name": "Review",
+      "type": "credibility",
+      "name": "Credibility card",
       "settings": [
-        { "type": "textarea", "id": "quote", "label": "Quote" },
-        { "type": "text", "id": "name", "label": "Name" },
-        { "type": "text", "id": "role", "label": "Role" }
+        { "type": "select", "id": "icon", "label": "Icon", "default": "shield-check", "options": [
+          { "value": "shield-check", "label": "Shield" }, { "value": "award", "label": "Award" },
+          { "value": "zap", "label": "Zap" }, { "value": "sun", "label": "Sun" }, { "value": "check", "label": "Check" } ] },
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "textarea", "id": "text", "label": "Text" }
       ]
     },
     {
